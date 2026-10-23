@@ -1,0 +1,1182 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+.bar{position:relative}
+.hamb{display:inline-flex;flex-direction:column;justify-content:center;gap:4px;width:42px;height:38px;padding:0 10px;border:1px solid var(--line);background:var(--surface);border-radius:8px}
+.hamb span{display:block;height:3px;border-radius:2px;background:var(--ink);transition:transform .2s,opacity .2s}
+.hamb[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamb[aria-expanded="true"] span:nth-child(2){opacity:0}
+.hamb[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.menu{position:absolute;right:0;top:calc(100% + 8px);z-index:50;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:230px;box-shadow:0 12px 32px rgba(0,0,0,.18);animation:pop .15s ease-out}
+.menu[hidden]{display:none}
+.menu .seg{display:flex}.menu .seg button{flex:1}
+.menu label{display:flex;justify-content:space-between;align-items:center;gap:8px}
+@keyframes pop{from{opacity:0;transform:translateY(-6px) scale(.96)}to{opacity:1;transform:none}}
+.btn,.chip,.hbtn,.tabs button,.seg button,.hamb{transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover:not(:disabled),.chip:hover:not(:disabled),.hbtn:hover,.tabs button:hover,.hamb:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 8px 18px rgba(0,0,0,.18);position:relative;z-index:2}
+.chip[aria-pressed="true"]{box-shadow:0 0 0 3px var(--tint),0 4px 10px rgba(0,0,0,.2);transform:scale(1.06)}
+.chip[aria-pressed="true"]::before{content:"\2713\00a0"}
+.hbtn[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 5px 0 0 var(--accent),0 4px 10px rgba(0,0,0,.15)}
+.chip[aria-pressed="true"],.hbtn[aria-pressed="true"]{--g:var(--accent)}
+#cities .chip[aria-pressed="true"],#pcities .chip[aria-pressed="true"]{--g:#3b82f6;background:#2563eb;border-color:#60a5fa;color:#fff}
+.chip[aria-pressed="true"]{animation:burst .7s ease-out 1,glow 1.5s ease-in-out .7s infinite}
+#states .chip[aria-pressed="true"],#pstates .chip[aria-pressed="true"]{--g:#10b981}
+.hbtn[aria-pressed="true"]{animation:glowh 1.8s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--g),0 0 10px 3px var(--g)}50%{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--g),0 0 26px 10px var(--g)}}
+@keyframes burst{0%{transform:scale(1);box-shadow:0 0 0 0 var(--g)}40%{transform:scale(1.25);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--g),0 0 40px 16px var(--g)}100%{transform:scale(1.06);box-shadow:0 0 0 3px #fff,0 0 0 5px var(--g),0 0 10px 3px var(--g)}}
+@keyframes glowh{0%,100%{box-shadow:inset 5px 0 0 var(--g),0 0 4px 0 var(--g)}50%{box-shadow:inset 5px 0 0 var(--g),0 0 16px 4px var(--g)}}
+@media (prefers-reduced-motion:reduce){.chip[aria-pressed="true"]{animation:none;box-shadow:0 0 0 2px var(--g),0 0 14px 4px var(--g)}.hbtn[aria-pressed="true"]{animation:none;box-shadow:inset 5px 0 0 var(--g),0 0 12px 3px var(--g)}}
+.minihero{padding:10px 0 0;gap:6px}.minihero svg{width:64px;height:64px}.minihero b{font-size:26px;font-weight:800}
+.foot{margin-top:36px;padding:20px 0 8px;border-top:1px solid var(--line)}
+.foot .fb{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px}
+.foot .fb svg{width:36px;height:36px}
+.foot nav{display:flex;flex-wrap:wrap;gap:14px 28px;margin:14px 0}
+.foot nav a{color:var(--muted);font-size:14px;line-height:1.5;text-decoration:none;max-width:112px;cursor:pointer}
+.foot nav a:hover{color:var(--accent)}
+.foot .cr{font:13px ui-monospace,Menlo,Consolas,monospace;color:var(--muted);margin:0}
+.slot{margin-top:10px}
+.uinfo{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.uinfo[hidden]{display:none}
+.uav{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:800;font-size:18px}
+.uinfo b{display:block}.uinfo small{display:block;color:var(--muted);font-size:12px;word-break:break-all}
+.btn.busy::before{content:"";display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-2px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#rfmsg.rf{font-weight:600}#rfmsg.run{color:var(--warn)}#rfmsg.ok{color:var(--ok)}
+.slot .status{margin:0}
+.near{margin-bottom:16px}
+.mapbox{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.mapbox[hidden]{display:none}
+.mapin{background:var(--surface);border:1px solid var(--line);border-radius:14px;width:min(900px,100%);max-height:100%;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:14px;animation:pop .15s ease-out}
+.mapin iframe{width:100%;height:min(60vh,480px);border:0;border-radius:10px;background:var(--bg)}
+.mapin .row{display:flex;gap:8px;flex-wrap:wrap}
+.mapin a.btn{text-decoration:none;color:var(--ink)}
+.mapin a.btn.primary{color:var(--accent-ink)}
+.near .hbtn{border-color:var(--accent)}
+.near .msgl{font-size:13px;color:var(--muted);margin:6px 0}
+.near .msgl.bad{color:var(--alert)}
+</style></head><body>
+<title>MediCareX</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: login, details and picker screens, then a console. Left pane picks state, city, hospital. Right pane has module tabs. */
+:root{
+  --bg:#E6F4EA; --surface:#F6FCF8; --ink:#0E2A1B; --muted:#4A6B58; --line:#BCDCC6;
+  --accent:#1E8A4D; --accent-ink:#FFFFFF; --alert:#C8312B; --alert-ink:#FFFFFF; --ok:#1E7A46; --warn:#A8620A; --tint:#D3EBDB;
+  --f-display:"Bricolage Grotesque","Noto Sans Devanagari",system-ui,sans-serif;
+  --f-body:"Noto Sans","Noto Sans Devanagari",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A1719; --surface:#112427; --ink:#E6F1F0; --muted:#94B0B2; --line:#223C40;
+  --accent:#3FC1B8; --accent-ink:#052321; --alert:#FF6B63; --alert-ink:#2A0705; --ok:#5FD08A; --warn:#E8B04A; --tint:#163236; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A1719; --surface:#112427; --ink:#E6F1F0; --muted:#94B0B2; --line:#223C40;
+  --accent:#3FC1B8; --accent-ink:#052321; --alert:#FF6B63; --alert-ink:#2A0705; --ok:#5FD08A; --warn:#E8B04A; --tint:#163236; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto}
+.bar{display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 12px;font-weight:600;font-size:13px}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);padding:12px 22px;font-size:15px}
+.btn.sm{padding:5px 9px;font-size:12px}
+.btn.danger{border-color:var(--alert);color:var(--alert)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:8px 12px;font-size:13px;font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+select,input[type=text],input[type=tel],input[type=email],input[type=number],input[type=time],input[type=search]{border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);padding:8px 10px;min-width:0}
+
+/* intro screens */
+#intro{min-height:100%;padding-block:16px 40px}
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:28px 0 8px}
+.hero svg{width:112px;height:112px}
+.hero h1{font-size:clamp(38px,8vw,64px);font-weight:800;letter-spacing:-.02em}
+.hero p{margin:0;color:var(--muted);max-width:52ch}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:28px 0 20px}
+.how div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.how h3{font-size:17px;margin-bottom:6px}
+.how p{margin:0;color:var(--muted);font-size:14px}
+.notice{background:var(--tint);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14px;max-width:760px;margin:0 auto 24px}
+.cta{display:flex;justify-content:center}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0}
+.steps span{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.steps span.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.form{display:flex;flex-direction:column;gap:12px;width:100%;max-width:380px;margin:18px auto 0;text-align:left}
+.form label{font-size:13px;font-weight:600;display:flex;flex-direction:column;gap:4px}
+.form input,.form select{width:100%;padding:11px 12px}
+.form .note{font-size:12px;color:var(--muted);margin:0}
+.ptitle{font-size:clamp(28px,5vw,40px);font-weight:800;margin-top:24px}
+.err{color:var(--alert);font-size:13px;font-weight:600;margin:0;min-height:1.2em}
+.form input[aria-invalid="true"]{border-color:var(--alert)}
+
+/* console */
+#dash{padding-bottom:40px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-block:10px;margin:0 -2px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.topin{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand svg{width:38px;height:38px}
+.brand h2{font-size:24px;font-weight:800}
+.brand small{display:block;color:var(--muted);font-size:12px;margin-top:-2px}
+.banner{margin-top:14px;background:var(--tint);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px}
+.grid{display:grid;grid-template-columns:minmax(0,290px) minmax(0,1fr);gap:18px;margin-top:14px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chip:disabled{opacity:.5;cursor:not-allowed}
+.hlist{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow:auto}
+.hbtn{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;width:100%}
+.hbtn[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent);background:var(--tint)}
+.hbtn b{font-weight:600}
+.hbtn span{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px}
+.tabs button{white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:600}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.count{display:inline-block;min-width:18px;padding:0 5px;margin-left:6px;border-radius:9px;background:var(--alert);color:var(--alert-ink);font-size:11px;text-align:center}
+.msg{min-height:0;margin:0 0 10px;font-size:14px;font-weight:600}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--alert)}
+.sec{margin-top:20px}
+.sec h3{font-size:18px;margin-bottom:8px}
+.sub{color:var(--muted);margin:4px 0 12px;font-size:14px}
+.amb{border:2px solid var(--alert);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.amb .num{font-family:var(--f-mono);font-size:clamp(24px,5vw,34px);font-weight:500;letter-spacing:.02em;word-break:break-word}
+.amb .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.call{background:var(--alert);color:var(--alert-ink);border:0;border-radius:8px;padding:10px 16px;font-weight:600;text-decoration:none;font-size:14px;display:inline-block}
+.none{border:2px dashed var(--line);border-radius:12px;padding:16px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px}
+.facts div{min-width:0}
+.facts dt{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.facts dd{margin:2px 0 0;overflow-wrap:anywhere}
+.alts{margin-top:10px;font-size:14px;color:var(--muted)}
+.alts .mono,.mono{font-family:var(--f-mono)}
+.alts .mono{color:var(--ink)}
+.nat{margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.nat div{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;text-align:center;min-width:0}
+.nat b{font-family:var(--f-mono);font-size:22px;display:block}
+.nat span{font-size:12px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.tile b{font-family:var(--f-display);font-size:30px;font-weight:800;display:block;line-height:1.1}
+.tile span{font-size:12px;color:var(--muted)}
+.tile.warn b{color:var(--warn)}.tile.bad b{color:var(--alert)}
+.wardrow{display:grid;grid-template-columns:110px minmax(0,1fr) 90px;gap:10px;align-items:center;margin-bottom:8px;font-size:13px}
+@media (max-width:520px){.wardrow{grid-template-columns:80px minmax(0,1fr) 70px}}
+.stack{display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--line)}
+.stack i{display:block;height:100%}
+.sOcc{background:var(--accent)}.sCln{background:var(--warn)}.sMnt{background:var(--muted)}.sAvl{background:var(--tint)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;border:1px solid var(--line)}
+.scroll{overflow-x:auto}
+table.tbl{border-collapse:collapse;width:100%;font-size:13px}
+.tbl th{background:var(--tint);text-align:left;font-weight:600;padding:8px 10px;white-space:nowrap}
+.tbl td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.badge{display:inline-block;border-radius:999px;padding:1px 9px;font-size:11px;font-weight:600;border:1px solid var(--line);margin:0 4px 2px 0;white-space:nowrap}
+.b-ok{color:var(--ok);border-color:var(--ok)}.b-warn{color:var(--warn);border-color:var(--warn)}.b-bad{color:var(--alert);border-color:var(--alert)}.b-mute{color:var(--muted)}
+.inl{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.inl label{display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:600;color:var(--muted)}
+.beds{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.bed{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);text-align:left;min-width:0}
+.bed b{display:block;font-family:var(--f-mono);font-size:13px}
+.bed span{font-size:11px;color:var(--muted);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bed.Occupied{border-color:var(--accent);background:var(--tint)}
+.bed.Cleaning{border-color:var(--warn)}
+.bed.Maintenance{border-style:dashed}
+.bed[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:1px}
+.status{display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted);margin-top:16px}
+.status .mono{color:var(--ink)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:6px}
+.fine{font-size:12px;color:var(--muted);margin-top:14px}
+.pn{display:flex;justify-content:space-between;gap:12px;margin:24px auto 0;max-width:380px;width:100%}
+.pn .btn{flex:1}
+.lock{border:2px dashed var(--line);border-radius:12px;padding:20px;text-align:center}
+@media (prefers-reduced-motion:no-preference){.flash{animation:fl .8s}@keyframes fl{from{background:var(--tint)}to{background:var(--surface)}}}
+</style>
+
+<style>
+
+/* site-wide background (same design on every page): diamond lattice + soft waves + faint crosses.
+   Colours come only from the existing light/dark theme variables, so both themes keep their original palette. */
+html::before{content:"";position:fixed;top:0;right:0;width:min(62vw,660px);height:340px;z-index:-1;pointer-events:none;opacity:.6;
+  background:repeating-linear-gradient(45deg,transparent 0 46px,var(--line) 46px 48px),repeating-linear-gradient(-45deg,transparent 0 46px,var(--line) 46px 48px);
+  -webkit-mask-image:linear-gradient(to bottom left,#000 15%,transparent 75%);mask-image:linear-gradient(to bottom left,#000 15%,transparent 75%)}
+html::after{content:"";position:fixed;left:-10%;right:-10%;bottom:0;height:38%;z-index:-1;pointer-events:none;
+  background:radial-gradient(70% 100% at 50% 100%,var(--tint) 0 60%,transparent 61%),radial-gradient(55% 80% at 12% 100%,var(--tint) 0 60%,transparent 61%);opacity:.9}
+body::after{content:"";position:fixed;top:0;right:0;width:min(62vw,660px);height:340px;z-index:-1;pointer-events:none;opacity:.5;background:var(--line);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 660 340'%3E%3Cg fill='%23000'%3E%3Cpath id='p' d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(70 60) scale(2.4)'/%3E%3Cpath d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(250 40) scale(1.6)'/%3E%3Cpath d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(120 200) scale(1.3)'/%3E%3Cpath d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(380 270) scale(1.8)'/%3E%3Cpath d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(560 150) scale(1.2)'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top/100% 100%;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 660 340'%3E%3Cg fill='%23000'%3E%3Cpath id='p' d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(70 60) scale(2.4)'/%3E%3Cpath d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(250 40) scale(1.6)'/%3E%3Cpath d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(120 200) scale(1.3)'/%3E%3Cpath d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(380 270) scale(1.8)'/%3E%3Cpath d='M-9-3h6v-6h6v6h6v6h-6v6h-6v-6h-6z' transform='translate(560 150) scale(1.2)'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top/100% 100%}
+header.top{background:var(--bg);background:color-mix(in srgb,var(--bg) 85%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#intro,#pick,#dash{position:relative}
+/* login redesign: card layout. Colours come only from the existing theme variables. */
+#login{position:relative;overflow:hidden;min-height:100vh;padding-block:16px 40px}
+#login .wrap{position:relative;z-index:1}
+.lghead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.lgbrand{display:flex;align-items:center;gap:12px}
+.lgbrand svg{width:56px;height:56px;flex:0 0 auto}
+.lgbrand b{display:block;font-family:var(--f-display);font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.lgbrand b span{color:var(--accent)}
+.lgbrand small{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.lgcard{max-width:460px;margin:34px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px 26px 22px;box-shadow:0 22px 60px rgba(0,0,0,.12)}
+.lgcard h1{font-size:clamp(24px,5vw,30px);font-weight:800;text-align:center}
+.lgsub{margin:6px 0 18px;text-align:center;color:var(--muted);font-size:14px}
+.lgtabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.lgtabs button{border:0;background:transparent;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 10px;font-weight:700;font-size:15px;color:var(--muted)}
+.lgtabs button[aria-pressed="true"]{background:var(--tint);color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.ic{width:20px;height:20px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.lgform{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.lgform .lgf{position:relative}
+.lgform .lgf .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.lgform .lgf input,.lgform .lgf select{width:100%;height:50px;padding:0 14px 0 46px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font-size:15px}
+.lgform .lgf select{padding-left:14px}
+.lgform .lgf input::placeholder{color:var(--muted);opacity:.85}
+.lgform .lgf input[aria-invalid="true"]{border-color:var(--alert)}
+.lgpanel{display:flex;flex-direction:column;gap:12px}
+.lgpanel[hidden]{display:none}
+.lgform .note{font-size:12px;color:var(--muted);margin:0;text-align:center}
+.lgform .err{text-align:center;margin:0}
+.lgsubmit{display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:16px;box-shadow:0 8px 20px rgba(0,0,0,.16)}
+.lgsubmit:hover{filter:brightness(1.06)}
+.lgor{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:13px;font-weight:600}
+.lgor::before,.lgor::after{content:"";flex:1;height:1px;background:var(--line)}
+.lgstaff{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--tint);color:var(--accent)}
+.lgstaff span{flex:1;display:flex;flex-direction:column}
+.lgstaff b{font-size:16px}
+.lgstaff small{color:var(--muted);font-size:13px}
+.lgstaff .ic{width:26px;height:26px}
+.lgstaff[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.lgstaff[aria-pressed="true"] .chev{transform:rotate(90deg)}
+.lgguest{border:0;background:transparent;color:var(--muted);font-weight:600;font-size:14px;padding:6px;text-decoration:underline}
+.lgswitch{margin:2px 0 0;text-align:center;color:var(--muted);font-size:14px}
+.lglink{border:0;background:transparent;color:var(--accent);font-weight:800;font-size:14px;padding:0 2px}
+@media (max-width:520px){.lgcard{padding:22px 16px 18px;margin-top:22px}.lghead{flex-wrap:nowrap}}
+</style>
+<section id="login">
+  <div class="wrap">
+    <div class="lghead">
+      <div class="lgbrand"><svg viewBox="0 0 120 120" role="img" aria-label="MediCareX logo"><path d="M60 6 106 33v54L60 114 14 87V33Z" fill="var(--accent)"/><path d="M50 30h20v20h20v20H70v20H50V70H30V50h20Z" fill="var(--accent-ink)"/><path d="M24 60h18l7-12 10 26 8-14h29" fill="none" stroke="var(--alert)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>MediCare<span>X</span></b><small data-i="tag"></small></div></div>
+      <div class="bar"><button class="hamb" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="menu" hidden><div class="uinfo" hidden></div>
+      <div class="seg" role="group" aria-label="Language">
+        <button data-lang="en" aria-pressed="true">English</button>
+        <button data-lang="hi" aria-pressed="false">हिन्दी</button>
+      </div>
+      <button class="btn" data-i="theme">Light / Dark</button>
+    </div></div>
+    </div>
+    <div class="lgcard">
+      <h1 data-i="welcome"></h1>
+      <p class="lgsub" data-i="welcomeSub"></p>
+      <div class="lgtabs" role="group" aria-label="Login or Sign up">
+        <button type="button" id="tabLogin" aria-pressed="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg><span data-i="tabLogin"></span></button>
+        <button type="button" id="tabSignup" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5M19 8v6M16 11h6"/></svg><span data-i="tabSignup"></span></button>
+      </div>
+      <form class="lgform" id="lform" novalidate>
+        <div class="lgf"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg><input id="lname" type="text" autocomplete="name" data-ph="phName"></div>
+        <div class="lgf"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg><input id="lmobile" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national" data-ph="phMobile"></div>
+        <div class="lgf"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg><input id="lgmail" type="email" autocomplete="email" data-ph="phGmail"></div>
+        <div id="lcodew" class="lgpanel" hidden>
+          <div class="lgf"><select id="lrole" aria-label="Role"><option value="patient" data-i="Patient" selected hidden></option><option value="doctor" data-i="Doctor"></option><option value="staff" data-i="Staff"></option></select></div>
+          <div class="lgf"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><input id="lcode" type="password" inputmode="numeric" maxlength="6" autocomplete="one-time-code" data-ph="phCode"></div>
+          <p class="note" data-i="lcodehint"></p>
+        </div>
+        <p class="err" id="lerr" role="alert"></p>
+        <button class="lgsubmit" type="submit" id="lsubmit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="m10 8 4 4-4 4M14 12H4"/></svg><span id="lsubtxt" data-i="lbtn"></span></button>
+        <div class="lgor"><span data-i="orT"></span></div>
+        <button class="lgstaff" type="button" id="staffbtn" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/></svg><span><b data-i="staffLogin"></b><small data-i="staffSub"></small></span><svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="lgguest" type="button" id="guest" data-i="guest"></button>
+        <p class="lgswitch"><span id="swtxt" data-i="noAcct"></span> <button class="lglink" type="button" id="swbtn" data-i="tabSignup"></button></p>
+        <p class="note" data-i="lnote"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="intro" hidden>
+  <div class="wrap">
+    <div class="bar"><button class="hamb" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="menu" hidden><div class="uinfo" hidden></div>
+      <div class="seg" role="group" aria-label="Language">
+        <button data-lang="en" aria-pressed="true">English</button>
+        <button data-lang="hi" aria-pressed="false">हिन्दी</button>
+      </div>
+      <button class="btn" data-i="theme">Light / Dark</button>
+    </div></div>
+    <div class="hero">
+      <svg viewBox="0 0 120 120" role="img" aria-label="MediCareX logo">
+        <path d="M60 6 106 33v54L60 114 14 87V33Z" fill="var(--accent)"/>
+        <path d="M50 30h20v20h20v20H70v20H50V70H30V50h20Z" fill="var(--accent-ink)"/>
+        <path d="M24 60h18l7-12 10 26 8-14h29" fill="none" stroke="var(--alert)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1>MediCareX</h1>
+      <p data-i="tag"></p>
+    </div>
+    <div class="how">
+      <div><h3 data-i="h1"></h3><p data-i="p1"></p></div>
+      <div><h3 data-i="h2"></h3><p data-i="p2"></p></div>
+      <div><h3 data-i="h3"></h3><p data-i="p3"></p></div>
+      <div><h3 data-i="h4"></h3><p data-i="p4"></p></div>
+    </div>
+    <p class="notice" data-i="notice"></p>
+    <div class="pn"><button class="btn" type="button" data-nav="login" data-i="prev"></button><button class="btn primary" type="button" data-nav="pick" data-i="next"></button></div>
+  </div>
+</section>
+
+<section id="pick" hidden>
+  <div class="wrap" style="padding-bottom:40px">
+    <div class="bar"><button class="hamb" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="menu" hidden><div class="uinfo" hidden></div>
+      <div class="seg" role="group" aria-label="Language">
+        <button data-lang="en" aria-pressed="true">English</button>
+        <button data-lang="hi" aria-pressed="false">हिन्दी</button>
+      </div>
+      <button class="btn" data-i="theme">Light / Dark</button>
+    </div></div>
+    <div class="hero minihero"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 6 106 33v54L60 114 14 87V33Z" fill="var(--accent)"/><path d="M50 30h20v20h20v20H70v20H50V70H30V50h20Z" fill="var(--accent-ink)"/><path d="M24 60h18l7-12 10 26 8-14h29" fill="none" stroke="var(--alert)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>MediCareX</b><p data-i="tag"></p></div>
+    <h1 class="ptitle" data-i="ptitle"></h1>
+    <p class="sub" data-i="psub"></p>
+    <div class="panel">
+      <div class="near" id="pnear"></div>
+      <p class="lbl" data-i="state"></p>
+      <div class="chips" id="pstates"></div>
+      <p class="lbl" data-i="city"></p>
+      <div class="chips" id="pcities"></div>
+      <p class="lbl" data-i="hosp"></p>
+      <div class="hlist" id="phosp"></div>
+    </div>
+        <div class="pn"><button class="btn" type="button" data-nav="intro" data-i="prev"></button><button class="btn primary" type="button" data-nav="dash" data-i="next"></button></div>
+  <footer class="foot"><div class="fb"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 6 106 33v54L60 114 14 87V33Z" fill="var(--accent)"/><path d="M50 30h20v20h20v20H70v20H50V70H30V50h20Z" fill="var(--accent-ink)"/><path d="M24 60h18l7-12 10 26 8-14h29" fill="none" stroke="var(--alert)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>MediCareX</span></div><nav><a href="#" data-foot="intro" data-i="fHow"></a><a href="#" data-foot="pick" data-i="fPat"></a><a href="#" data-foot="hos" data-i="fHos"></a><a href="#" data-foot="plogin" data-i="fPlogin"></a><a href="#" data-foot="hlogin" data-i="fHlogin"></a></nav><p class="cr" data-i="fcopy"></p></footer>
+  </div>
+</section>
+
+<section id="dash" hidden>
+  <header class="top"><div class="wrap topin">
+    <div class="brand">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 6 106 33v54L60 114 14 87V33Z" fill="var(--accent)"/><path d="M50 30h20v20h20v20H70v20H50V70H30V50h20Z" fill="var(--accent-ink)"/><path d="M24 60h18l7-12 10 26 8-14h29" fill="none" stroke="var(--alert)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><h2>MediCareX</h2><small data-i="sub"></small></div>
+    </div>
+    <div class="bar"><button class="hamb" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="menu" hidden><div class="uinfo" hidden></div>
+      <div class="seg" role="group" aria-label="Language">
+        <button data-lang="en" aria-pressed="true">English</button>
+        <button data-lang="hi" aria-pressed="false">हिन्दी</button>
+      </div>
+      <label class="mono" style="font-size:12px;color:var(--muted)"><span data-i="Role"></span> <select id="role"><option value="viewer" data-i="Viewer"></option><option value="staff" data-i="Staff"></option><option value="admin" data-i="Admin"></option></select></label>
+      <button class="btn" data-i="theme"></button>
+      <button class="btn" id="back" data-i="how"></button>
+      <button class="btn" id="logout" data-i="logout"></button>
+    </div></div>
+  </div></header>
+  <div class="wrap">
+    <div id="slot4" class="slot"><p class="status" id="statusbar">
+      <span><i class="dot"></i><span data-i="auto"></span> <span class="mono" id="count">5:00</span></span>
+      <span><span data-i="last"></span> <span class="mono" id="stamp">--</span></span>
+      <button class="btn" id="now" data-i="now"></button> <span id="rfmsg" role="status" aria-live="polite"></span>
+    </p></div>
+    <div class="pn" style="margin:14px 0 0;max-width:none;justify-content:flex-start"><button class="btn" type="button" data-nav="pick" data-i="prev" style="flex:0 0 auto"></button></div>
+    <div class="banner"><span id="who"></span> <span data-i="demo"></span></div>
+    <div class="grid">
+      <aside class="panel">
+        <div class="near" id="near"></div>
+        <p class="lbl" data-i="state"></p>
+        <div class="chips" id="states"></div>
+        <p class="lbl" data-i="city"></p>
+        <div class="chips" id="cities"></div>
+        <p class="lbl" data-i="hosp"></p>
+        <div class="hlist" id="hospitals"></div>
+      </aside>
+      <main style="min-width:0">
+        <nav class="tabs" id="tabs" aria-label="Modules"></nav>
+        <div class="panel" id="main">
+          <p class="msg" id="msg" role="status"></p>
+          <div id="tabbody"></div>
+        </div>
+      </main>
+    </div>
+        
+  <footer class="foot"><div class="fb"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 6 106 33v54L60 114 14 87V33Z" fill="var(--accent)"/><path d="M50 30h20v20h20v20H70v20H50V70H30V50h20Z" fill="var(--accent-ink)"/><path d="M24 60h18l7-12 10 26 8-14h29" fill="none" stroke="var(--alert)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>MediCareX</span></div><nav><a href="#" data-foot="intro" data-i="fHow"></a><a href="#" data-foot="pick" data-i="fPat"></a><a href="#" data-foot="hos" data-i="fHos"></a><a href="#" data-foot="plogin" data-i="fPlogin"></a><a href="#" data-foot="hlogin" data-i="fHlogin"></a></nav><p class="cr" data-i="fcopy"></p></footer>
+  </div>
+</section>
+
+<script>
+const T={
+en:{tag:"A Healthier Tomorrow Starts Today",
+h1:"1. Pick state, city and hospital",h2:"2. See the real ambulance number",h3:"3. Run the console",h4:"4. Stays fresh",
+p1:"All four NCR states are covered, each with its main cities and hospitals.",
+p2:"Hospital names, addresses and emergency numbers come from public listings and hospital websites. Copy the number or tap Call.",
+p3:"Beds, patients, doctors, medicines, ambulances, facilities, alerts and an activity log work as a demo console with fictional data.",
+p4:"The console refreshes by itself every 5 minutes. You can also refresh it by hand.",
+notice:"Contact numbers were collected on 18 Oct 2026 and are not live. Confirm before relying on one. In any emergency dial 112 (all services), 108 (ambulance), 102 (mother and child), or 102 in Delhi for CATS.",
+go:"Next: choose state, city and hospital",lname:"Your name",lmobile:"Mobile number (10 digits)",lgmail:"Gmail address",lrole:"Who is logging in?",
+state:"State",soon:"No hospital data yet",eName:"Enter your name.",eMobile:"Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9.",eGmail:"Enter a valid Gmail address, like name@gmail.com.",
+lbtn:"Login",guest:"Continue as guest (patient)",lnote:"Demo sign-in. Your details stay in this browser and are not sent anywhere. Roles are enforced in the page only, not on a server.",
+hello:"Hello",stp:["Login","Details","State, city, hospital","Dashboard"],ptitle:"Choose your state, city and hospital",psub:"You can change all three later from the dashboard.",open:"Open dashboard",logout:"Logout",
+theme:"Light / Dark",how:"How it works",sub:"Hospital operations console",city:"City",hosp:"Hospitals",auto:"Next refresh in",last:"Last refreshed",now:"Refresh now",
+demo:"Total beds (where a public figure exists) and the AIIMS ambulance count come from public sources. Occupancy, patients, stock and vehicle status are fictional demo data. Hospital names and contact numbers are real.",
+amb:"Ambulance / emergency number",call:"Call",copy:"Copy",copied:"Copied",
+none:"No ambulance number was found in public listings for this hospital. Dial 108 or 112, or ask the hospital's main desk.",
+addr:"Address",dist:"Distance from KIET",hours:"Service",src:"Source",alt:"Other numbers",km:"about {n} km",h24:"24x7 emergency",all:"All services",amb108:"Ambulance",mom:"Mother and child",
+fine:"Distance is the approximate road distance from KIET, Muradnagar, and is shown only where known."},
+hi:{tag:"A Healthier Tomorrow Starts Today",
+h1:"1. राज्य, शहर और अस्पताल चुनें",h2:"2. असली एम्बुलेंस नंबर देखें",h3:"3. कंसोल चलाएं",h4:"खुद अपडेट होता है",
+p1:"NCR के चारों राज्य शामिल हैं, हर एक के मुख्य शहर और अस्पतालों के साथ।",
+p2:"अस्पताल का नाम, पता और इमरजेंसी नंबर सार्वजनिक लिस्टिंग और अस्पतालों की वेबसाइट से हैं। नंबर कॉपी करें या Call दबाएं।",
+p3:"बेड, मरीज़, डॉक्टर, दवाइयां, एम्बुलेंस, सुविधाएं, अलर्ट और एक्टिविटी लॉग काल्पनिक डेटा के साथ डेमो कंसोल की तरह चलते हैं।",
+p4:"कंसोल हर 5 मिनट में अपने आप रीफ्रेश होता है। चाहें तो हाथ से भी रीफ्रेश करें।",
+notice:"संपर्क नंबर 18 अक्टूबर 2026 को जमा किए गए हैं और लाइव नहीं हैं। भरोसा करने से पहले पक्का कर लें। आपातकाल में 112 (सभी सेवाएं), 108 (एम्बुलेंस), 102 (माँ और बच्चा) डायल करें।",
+go:"आगे: राज्य, शहर और अस्पताल चुनें",lname:"आपका नाम",lmobile:"मोबाइल नंबर (10 अंक)",lgmail:"जीमेल पता",lrole:"कौन लॉगिन कर रहा है?",
+state:"राज्य",soon:"अभी अस्पताल का डेटा नहीं है",eName:"अपना नाम लिखें।",eMobile:"6, 7, 8 या 9 से शुरू होने वाला सही 10 अंकों का मोबाइल नंबर लिखें।",eGmail:"सही Gmail पता लिखें, जैसे name@gmail.com।",
+lbtn:"लॉगिन",guest:"गेस्ट (मरीज़) की तरह जारी रखें",lnote:"डेमो साइन-इन। आपकी जानकारी सिर्फ इसी ब्राउज़र में रहती है, कहीं भेजी नहीं जाती। रोल सिर्फ पेज में लागू होते हैं, सर्वर पर नहीं।",
+hello:"नमस्ते",stp:["लॉगिन","जानकारी","राज्य, शहर, अस्पताल","डैशबोर्ड"],ptitle:"अपना राज्य, शहर और अस्पताल चुनें",psub:"तीनों बाद में डैशबोर्ड से बदल सकते हैं।",open:"डैशबोर्ड खोलें",logout:"लॉगआउट",
+theme:"लाइट / डार्क",how:"कैसे काम करता है",sub:"अस्पताल ऑपरेशन कंसोल",city:"शहर",hosp:"अस्पताल",auto:"अगला रीफ्रेश",last:"आखिरी रीफ्रेश",now:"अभी रीफ्रेश करें",
+demo:"कुल बेड (जहां सार्वजनिक आंकड़ा मिला) और AIIMS की एम्बुलेंस संख्या सार्वजनिक स्रोतों से हैं। भराव, मरीज़, स्टॉक और गाड़ियों की स्थिति काल्पनिक डेमो डेटा है। अस्पतालों के नाम और संपर्क नंबर असली हैं।",
+amb:"एम्बुलेंस / इमरजेंसी नंबर",call:"कॉल करें",copy:"कॉपी",copied:"कॉपी हो गया",
+none:"इस अस्पताल के लिए सार्वजनिक लिस्टिंग में एम्बुलेंस नंबर नहीं मिला। 108 या 112 डायल करें, या अस्पताल के रिसेप्शन से पूछें।",
+addr:"पता",dist:"KIET से दूरी",hours:"सेवा",src:"स्रोत",alt:"अन्य नंबर",km:"लगभग {n} किमी",h24:"24x7 इमरजेंसी",all:"सभी सेवाएं",amb108:"एम्बुलेंस",mom:"माँ और बच्चा",
+fine:"दूरी KIET, मुरादनगर से लगभग सड़क दूरी है, और सिर्फ वहीं दिखती है जहां पता है।",
+"Role":"रोल","Viewer":"व्यूअर","Staff":"स्टाफ","Admin":"एडमिन",
+"Dashboard":"डैशबोर्ड","Patient Records":"मरीज़ रिकॉर्ड","Beds & Admissions":"बेड और भर्ती","Doctors & Schedules":"डॉक्टर और समय","Medicine Inventory":"दवा स्टॉक","Ambulances":"एम्बुलेंस","Facilities & Departments":"सुविधाएं और विभाग","Notifications":"सूचनाएं","Activity Log":"एक्टिविटी लॉग","Administration & Access":"प्रशासन और एक्सेस",
+"Total beds":"कुल बेड","Occupied":"भरे","Available":"खाली","Cleaning":"सफाई में","Maintenance":"मरम्मत में","Doctors available":"उपलब्ध डॉक्टर","Medicine alerts":"दवा अलर्ट","Open alerts":"खुले अलर्ट","Ward occupancy":"वार्ड के हिसाब से भराव","Recent activity":"हाल की गतिविधि"}
+};
+T.en.locdeny="Location is blocked. Turn ON Location/GPS on your phone or laptop, tap Allow in the browser prompt, then press the button again.";T.en.locoff="Could not get your location. Please turn ON Location/GPS on your phone or laptop and try again.";T.en.locsec="Live location works only when this page is opened over https or localhost.";T.en.maptitle="Your live location";T.en.mapopen="Open in Google Maps";T.en.mapdir="Directions to nearest hospital";T.en.mapclose="Close";T.en.mapnote="Updates automatically as you move.";
+T.hi.locdeny="लोकेशन बंद या ब्लॉक है। अपने फोन या लैपटॉप की Location/GPS ऑन करें, ब्राउज़र में Allow दबाएं, फिर बटन दोबारा दबाएं।";T.hi.locoff="आपकी लोकेशन नहीं मिली। अपने फोन या लैपटॉप की Location/GPS ऑन करके दोबारा कोशिश करें।";T.hi.locsec="लाइव लोकेशन तभी चलती है जब पेज https या localhost से खुला हो।";T.hi.maptitle="आपकी लाइव लोकेशन";T.hi.mapopen="Google Maps में खोलें";T.hi.mapdir="सबसे पास के अस्पताल का रास्ता";T.hi.mapclose="बंद करें";T.hi.mapnote="आप चलते हैं तो अपने आप अपडेट होता है।";
+T.en.lcode="6-digit access code";T.en.lcodehint="Doctors and Staff need this code because only they can update live data. Patients can only view.";T.en.eCode="Enter the 6-digit access code (numbers only).";T.en.eCodeBad="Access code is wrong.";
+T.hi.lcode="6 अंकों का एक्सेस कोड";T.hi.lcodehint="डॉक्टर और स्टाफ को यह कोड चाहिए क्योंकि सिर्फ वही लाइव डेटा अपडेट कर सकते हैं। मरीज़ सिर्फ देख सकते हैं।";T.hi.eCode="6 अंकों का एक्सेस कोड लिखें (सिर्फ अंक)।";T.hi.eCodeBad="एक्सेस कोड गलत है।";
+T.en.fHow="How It Works";T.en.fPat="For Patients & Hospitals";T.en.fHos="For Hospitals";T.en.fPlogin="Patient Login";T.en.fHlogin="Hospital Login";T.en.fcopy="© 2026 MediCareX. All rights reserved.";
+T.hi.fHow="कैसे काम करता है";T.hi.fPat="मरीज़ों और अस्पतालों के लिए";T.hi.fHos="अस्पतालों के लिए";T.hi.fPlogin="मरीज़ लॉगिन";T.hi.fHlogin="अस्पताल लॉगिन";T.hi.fcopy="© 2026 MediCareX. सर्वाधिकार सुरक्षित।";
+T.en.refreshing="Refreshing dashboard...";T.en.refreshed="Dashboard refreshed";T.hi.refreshing="डैशबोर्ड रीफ्रेश हो रहा है...";T.hi.refreshed="डैशबोर्ड रीफ्रेश हो गया";
+T.en.guest1="Guest";T.hi.guest1="गेस्ट";
+T.en["Role"]="Role";T.en["Patient"]="Patient";T.en["Doctor"]="Doctor";T.en.locbtn="Use my live location";T.en.nearest="Nearest hospitals";T.en.locask="Allow location access to see the hospitals nearest to you.";T.en.locwait="Finding your location...";T.en.locbad="Could not get your location. Allow location permission in the browser and try again.";T.en.locno="This browser does not support location.";T.en.away="km away (straight line, approximate)";T.hi.locbtn="मेरी लाइव लोकेशन इस्तेमाल करें";T.hi.nearest="सबसे नज़दीकी अस्पताल";T.hi.locask="अपने पास के अस्पताल देखने के लिए लोकेशन की अनुमति दें।";T.hi.locwait="आपकी लोकेशन ढूंढ रहे हैं...";T.hi.locbad="लोकेशन नहीं मिली। ब्राउज़र में लोकेशन की अनुमति दें और फिर कोशिश करें।";T.hi.locno="यह ब्राउज़र लोकेशन सपोर्ट नहीं करता।";T.hi.away="किमी दूर (सीधी दूरी, लगभग)";T.en.prev="Previous";T.en.next="Next";T.hi["Patient"]="मरीज़";T.hi["Doctor"]="डॉक्टर";T.hi.prev="पिछला";T.hi.next="अगला";
+T.en.bedsT="Total beds (public listing)";T.en.bedsNA="Not found in public sources";T.en.ambC="Ambulance fleet size";T.en.ambNA="Not published online by this hospital";
+T.hi.bedsT="कुल बेड (सार्वजनिक लिस्टिंग)";T.hi.bedsNA="सार्वजनिक स्रोतों में नहीं मिला";T.hi.ambC="एम्बुलेंस की संख्या";T.hi.ambNA="इस अस्पताल ने ऑनलाइन प्रकाशित नहीं की";
+T.en.welcome="Welcome to MediCareX";T.en.welcomeSub="Please login or create a new account to continue";T.en.tabLogin="Login";T.en.tabSignup="Sign Up";T.en.signupBtn="Sign Up";T.en.orT="OR";T.en.staffLogin="Doctor / Staff Login";T.en.staffSub="(Use Access Code)";T.en.noAcct="Don't have an account?";T.en.haveAcct="Already have an account?";T.en.phName="Enter your full name";T.en.phMobile="Enter your mobile number (10 digits)";T.en.phGmail="Enter your Gmail address";T.en.phCode="Enter 6-digit access code";
+T.hi.welcome="MediCareX में आपका स्वागत है";T.hi.welcomeSub="आगे बढ़ने के लिए लॉगिन करें या नया अकाउंट बनाएं";T.hi.tabLogin="लॉगिन";T.hi.tabSignup="साइन अप";T.hi.signupBtn="साइन अप";T.hi.orT="या";T.hi.staffLogin="डॉक्टर / स्टाफ लॉगिन";T.hi.staffSub="(एक्सेस कोड इस्तेमाल करें)";T.hi.noAcct="अकाउंट नहीं है?";T.hi.haveAcct="पहले से अकाउंट है?";T.hi.phName="अपना पूरा नाम लिखें";T.hi.phMobile="अपना मोबाइल नंबर लिखें (10 अंक)";T.hi.phGmail="अपना Gmail पता लिखें";T.hi.phCode="6 अंकों का एक्सेस कोड लिखें";
+/* Access code is now checked on the server (server.js, ACCESS_CODE). */
+T.en.eNet="Cannot reach the server. Start it with npm start and open http://localhost:3000.";T.en.eExpired="Session expired. Please login again.";
+T.hi.eNet="सर्वर से कनेक्ट नहीं हो पाया। npm start से सर्वर चलाएं और http://localhost:3000 खोलें।";T.hi.eExpired="सेशन खत्म हो गया। कृपया दोबारा लॉगिन करें।";
+let TOKEN="";const DIRTY={};
+const LOGIN_ROLE={patient:"viewer",doctor:"staff",staff:"staff"};let ltype="patient",authed=false,umobile="",ugmail="";
+const STATE_ORDER=["Delhi","Uttar Pradesh","Haryana","Rajasthan"];
+// n: Max Healthcare emergency/ambulance line from Max's own page.
+const MAXN="011 4055 4055";
+const H=[
+{id:"aiims",state:"Delhi",city:"New Delhi",name:"AIIMS New Delhi",area:"Ansari Nagar",addr:"Ansari Nagar, New Delhi 110029",amb:"011 2659 4405",alt:[["Emergency 2","011 2659 4706"],["Board","011 2658 8500"]],h24:true,src:"AIIMS Delhi citizen charter (emergency/casualty)"},
+{id:"sgrh",state:"Delhi",city:"New Delhi",name:"Sir Ganga Ram Hospital",area:"Rajinder Nagar",addr:"Rajinder Nagar, New Delhi 110060",amb:null,alt:[["Main desk","011 2575 0000"]],src:"Embassy of India directory (main number only)"},
+{id:"apollo-d",state:"Delhi",city:"New Delhi",name:"Apollo Hospital Indraprastha",area:"Sarita Vihar",addr:"Sarita Vihar, Delhi Mathura Road, New Delhi 110076",amb:null,alt:[["Main desk","011 2692 5858"],["Alternate","011 2692 5801"]],src:"Embassy of India directory (main number only)"},
+{id:"max-p",state:"Delhi",city:"East Delhi",name:"Max Super Speciality Hospital Patparganj",area:"IP Extension",addr:"108A, IP Extension, Patparganj, New Delhi 110092",amb:MAXN,alt:[["Trauma","011 4805 3391"],["Stroke","011 4805 3393"],["Chest","011 4805 3392"],["Heart attack","88003 33666"]],h24:true,src:"Max Healthcare and Embassy of India directory"},
+{id:"max-s",state:"Delhi",city:"North Delhi",name:"Max Super Speciality Hospital Shalimar Bagh",area:"Shalimar Bagh",addr:"FC-50, C and D Block, Shalimar Bagh, New Delhi 110088",amb:MAXN,alt:[["Hospital","011 6642 2222"]],h24:true,src:"Max Healthcare and Embassy of India directory"},
+{id:"surya",state:"Uttar Pradesh",city:"Muradnagar",name:"Surya Hospital",area:"ITS Muradnagar, Asalat Nagar",addr:"ITS Muradnagar, Asalat Nagar, Muradnagar, Ghaziabad 201206",km:3,amb:"08193 989902",alt:[],h24:true,src:"Bajaj Finserv Health listing"},
+{id:"kanha",state:"Uttar Pradesh",city:"Muradnagar",name:"Shree Kanha Hospital",area:"NH-58, Dundahera",addr:"NH-58, Delhi-Meerut Expy, opp. pillar no. 596, Bhim Nagar, Nai Basti Dundahera, Muradnagar 201206",amb:null,alt:[],src:"Bajaj Finserv Health listing (no number listed)"},
+{id:"paras-m",state:"Uttar Pradesh",city:"Modinagar",name:"Paras Hospital, Modinagar",area:"Seema Enclave",addr:"Seema Enclave, behind Axis Bank, Modinagar, Ghaziabad 201201",km:12,amb:"08445 860868",alt:[],src:"Bajaj Finserv Health listing (emergency contact)"},
+{id:"manipal",state:"Uttar Pradesh",city:"Ghaziabad",name:"Manipal Hospital",area:"NH-24, Hapur Road",addr:"NH-24, Hapur Road, near Landcraft Golflinks, Ghaziabad 201002",km:18,amb:"0120 350 9000",alt:[["Main desk","0120 353 5353"]],h24:true,src:"Manipal Hospitals (MARS 24x7 command centre)"},
+{id:"yashoda-i",state:"Uttar Pradesh",city:"Ghaziabad",name:"Yashoda Medicity",area:"Indirapuram",addr:"Hospital Plot, Shakti Khand 2, Indirapuram, Ghaziabad 201014",amb:"88008 11811",alt:[["Enquiry","92666 10101"],["Landline","0120 486 9900"]],src:"Yashoda Hospitals website"},
+{id:"yashoda-k",state:"Uttar Pradesh",city:"Ghaziabad",name:"Yashoda Super Speciality Hospital",area:"Kaushambi",addr:"H-1, Kaushambi, Ghaziabad 201010",amb:"73964 91199",alt:[["Landline","0120 418 9500"]],src:"Yashoda Hospitals website"},
+{id:"max-v",state:"Uttar Pradesh",city:"Ghaziabad",name:"Max Super Speciality Hospital Vaishali",area:"Vaishali",addr:"W-3, Sector 1, near Radisson Blu, Vaishali, Ghaziabad 201012",amb:MAXN,alt:[["Ambulance (older listing)","96434 07136"],["Ambulance 2","96434 07154"],["Emergency","0120 4188 188"],["Hospital","0120 417 3000"]],h24:true,src:"Max Healthcare and Embassy of India directory"},
+{id:"paras-v",state:"Uttar Pradesh",city:"Ghaziabad",name:"Paras Hospital, Vaishali",area:"Sector 4, Vaishali",addr:"Plot 130, Kaling Marg, GDA Market, Sector 4, Vaishali, Ghaziabad 201010",amb:"0120 462 4160",alt:[],src:"Bajaj Finserv Health listing (emergency contact)"},
+{id:"lecrest",state:"Uttar Pradesh",city:"Ghaziabad",name:"Le Crest Hospital",area:"Vasundhara",addr:"Budh Chowk, Sector 4, Vasundhara, Ghaziabad",amb:"95825 78821",alt:[["Landline","0120 472 3333"],["Toll free","1800 202 0526"]],h24:true,src:"Le Crest Hospital website"},
+{id:"metro-n",state:"Uttar Pradesh",city:"Noida",name:"Metro Hospital Noida",area:"Sector 12",addr:"X-1, Sector 12, Noida 201301",amb:"98108 55136",alt:[["Board","0120 436 6666"],["Appointments","98711 24095"]],src:"Embassy of India directory (emergency number)"},
+{id:"felix",state:"Uttar Pradesh",city:"Noida",name:"Felix Hospital",area:"Sector 137",addr:"Plot No. 5, Sector 137, Noida 201301",amb:"0120 305 0123",alt:[],src:"Housing.com hospital page (emergency number)"},
+{id:"yatharth-n",state:"Uttar Pradesh",city:"Noida",name:"Yatharth Super Speciality Hospital",area:"Noida",addr:"Noida, Gautam Buddha Nagar",amb:"1800 330 0000",alt:[["Landline","0120 246 0000"]],src:"Yatharth Hospitals contact page (ambulance/support, Dec 2024)"},
+{id:"apollo-n",state:"Uttar Pradesh",city:"Noida",name:"Apollo Hospital Noida",area:"Sector 26",addr:"E-2, Sector 26, Noida 201301",amb:null,alt:[["Main desk","0120 401 2000"],["Contact","99533 57043"]],src:"Embassy of India directory (no ambulance number)"},
+{id:"yatharth-gn",state:"Uttar Pradesh",city:"Greater Noida",name:"Yatharth Hospital Noida Extension",area:"Greater Noida West",addr:"Noida Extension, Greater Noida West",amb:"88001 10086",alt:[["Other","88001 10084"]],src:"Yatharth Hospitals contact page (ambulance, Dec 2024)"},
+{id:"anand",state:"Uttar Pradesh",city:"Meerut",name:"Anand Hospital",area:"Garh Road",addr:"A-1, Damodar Colony, Garh Road, near Medical College, Meerut 250002",amb:"0121 401 4800",alt:[],src:"Bajaj Finserv Health listing"},
+{id:"madhu",state:"Uttar Pradesh",city:"Hapur",name:"Madhu Hospital",area:"Kissanganj",addr:"Kanhaiya Pura, Kissanganj, Hapur 245101",amb:"09319 726653",alt:[],src:"Bajaj Finserv Health listing"},
+{id:"medanta",state:"Haryana",city:"Gurugram",name:"Medanta The Medicity",area:"Sector 38",addr:"Sector 38, Gurugram 122001",amb:"1068",alt:[["Support","88000 01068"],["Board","0124 414 1414"]],h24:true,src:"Medanta website (24x7 emergency helpline)"},
+{id:"paras-g",state:"Haryana",city:"Gurugram",name:"Paras Hospital Gurugram",area:"Sushant Lok",addr:"C-1, Sushant Lok Phase 1, Sector 43, Gurugram 122002",amb:"0124 458 5666",alt:[["Hospital","0124 458 5555"]],h24:true,src:"Embassy of India directory (emergency)"},
+{id:"max-g",state:"Haryana",city:"Gurugram",name:"Max Hospital Gurugram",area:"Sushant Lok",addr:"B-Block, Sushant Lok-I, opp. HUDA City Centre Metro, Gurugram 122001",amb:MAXN,alt:[["Hospital","0124 662 3000"]],h24:true,src:"Max Healthcare and Embassy of India directory"},
+{id:"park-g",state:"Haryana",city:"Gurugram",name:"Park Hospital",area:"South City 2, Sohna Road",addr:"Q Block, South City 2, Sohna Road, Sector 47, Gurugram",amb:"75031 41435",alt:[["Helpline","0124 490 0000"]],src:"Embassy of India directory (emergency)"},
+{id:"artemis",state:"Haryana",city:"Gurugram",name:"Artemis Hospital",area:"Sector 51",addr:"Sector 51, Gurugram 122001",amb:"011 7111 1011",alt:[["Appointments","011 7111 1000"]],src:"Embassy of India directory (emergency)"},
+{id:"metro-f",state:"Haryana",city:"Faridabad",name:"Metro Heart Institute",area:"Sector 16A",addr:"Sector 16A, Faridabad 121002",amb:"0129 427 7729",alt:[["Emergency 2","99997 14000"],["Helpline","0129 427 7777"]],h24:true,src:"Embassy of India directory (emergency)"},
+{id:"civil-f",state:"Haryana",city:"Faridabad",name:"Civil Hospital Faridabad",area:"Government hospital",addr:"Faridabad, Haryana",amb:"0129 241 5623",alt:[["Hospital","0129 221 0379"],["Control room","102"]],src:"Faridabad district directory (Medical Control Room, ambulance)"},
+{id:"ujala",state:"Haryana",city:"Sonipat",name:"Ujala Cygnus J.K. Hindu Hospital",area:"Old Rohtak Road",addr:"Old Rohtak Road, near Hindu College of Engineering, Industrial Area, Sonipat",amb:"91466 91466",alt:[["Emergency support","88180 02681"],["WhatsApp","93681 93681"]],src:"Directory listing (91466 91466 menu: press 2 for ambulance)"},
+{id:"global-a",state:"Rajasthan",city:"Alwar",name:"Global Hospital Alwar",area:"Lajpat Nagar",addr:"Plot No. 103, Lajpat Nagar, opp. Ford service station, Alwar 301001",amb:"0144 270 0104",alt:[],src:"Bajaj Finserv Health listing"},
+{id:"hariram",state:"Rajasthan",city:"Bhiwadi",name:"Hari Ram Hospital",area:"Alwar Bypass Road",addr:"Bhiwadi Alwar Bypass Road, Bhiwadi, Alwar 301019",amb:"09414 013800",alt:[],src:"Bajaj Finserv Health listing"},
+{id:"max-saket",state:"Delhi",city:"South Delhi",name:"Max Super Speciality Hospital Saket",area:"Saket",addr:"Press Enclave Road, Saket, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"fortis-okhla",state:"Delhi",city:"South Delhi",name:"Fortis Escorts Heart Institute",area:"Okhla",addr:"Okhla Road, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"moolchand",state:"Delhi",city:"South Delhi",name:"Moolchand Medcity",area:"Lajpat Nagar",addr:"Lala Lajpat Rai Marg, Lajpat Nagar, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"safdarjung",state:"Delhi",city:"South Delhi",name:"Safdarjung Hospital",area:"Safdarjung",addr:"Ansari Nagar West, Ring Road, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"rml",state:"Delhi",city:"Central Delhi",name:"Dr Ram Manohar Lohia Hospital",area:"Baba Kharak Singh Marg",addr:"Baba Kharak Singh Marg, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"loknayak",state:"Delhi",city:"Central Delhi",name:"Lok Nayak Hospital",area:"Delhi Gate",addr:"Jawaharlal Nehru Marg, Delhi Gate, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"lady-hardinge",state:"Delhi",city:"Central Delhi",name:"Lady Hardinge Medical College and Hospital",area:"Shaheed Bhagat Singh Marg",addr:"Shaheed Bhagat Singh Marg, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"ddu",state:"Delhi",city:"West Delhi",name:"Deen Dayal Upadhyay Hospital",area:"Hari Nagar",addr:"Hari Nagar, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"venkateshwar",state:"Delhi",city:"West Delhi",name:"Venkateshwar Hospital",area:"Dwarka",addr:"Sector 18A, Dwarka, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"manipal-dw",state:"Delhi",city:"West Delhi",name:"Manipal Hospital Dwarka",area:"Dwarka",addr:"Sector 6, Dwarka, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"aakash",state:"Delhi",city:"West Delhi",name:"Aakash Healthcare",area:"Dwarka",addr:"Sector 3, Dwarka, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"jaipur-golden",state:"Delhi",city:"North Delhi",name:"Jaipur Golden Hospital",area:"Rohini",addr:"Sector 3, Rohini, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"bsa",state:"Delhi",city:"North Delhi",name:"Dr Baba Saheb Ambedkar Hospital",area:"Rohini",addr:"Sector 6, Rohini, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"fortis-sb",state:"Delhi",city:"North Delhi",name:"Fortis Hospital Shalimar Bagh",area:"Shalimar Bagh",addr:"A Block, Shalimar Bagh, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"gtb",state:"Delhi",city:"East Delhi",name:"Guru Teg Bahadur Hospital",area:"Dilshad Garden",addr:"Dilshad Garden, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"metro-pv",state:"Delhi",city:"East Delhi",name:"Metro Hospital Preet Vihar",area:"Preet Vihar",addr:"Preet Vihar, New Delhi",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"santosh",state:"Uttar Pradesh",city:"Ghaziabad",name:"Santosh Medical College Hospital",area:"Pratap Vihar",addr:"Pratap Vihar, Ghaziabad",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"yashoda-nn",state:"Uttar Pradesh",city:"Ghaziabad",name:"Yashoda Hospital Nehru Nagar",area:"Nehru Nagar",addr:"Nehru Nagar, Ghaziabad",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"fortis-n",state:"Uttar Pradesh",city:"Noida",name:"Fortis Hospital Noida",area:"Sector 62",addr:"Sector 62, Noida",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"jaypee",state:"Uttar Pradesh",city:"Noida",name:"Jaypee Hospital",area:"Sector 128",addr:"Sector 128, Noida",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"kailash-n",state:"Uttar Pradesh",city:"Noida",name:"Kailash Hospital",area:"Sector 27",addr:"Sector 27, Noida",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"dist-noida",state:"Uttar Pradesh",city:"Noida",name:"District Hospital Noida",area:"Sector 39",addr:"Sector 39, Noida",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"sharda",state:"Uttar Pradesh",city:"Greater Noida",name:"Sharda Hospital",area:"Knowledge Park III",addr:"Knowledge Park III, Greater Noida",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"gims",state:"Uttar Pradesh",city:"Greater Noida",name:"Government Institute of Medical Sciences (GIMS)",area:"Knowledge Park V",addr:"Knowledge Park V, Greater Noida",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"subharti",state:"Uttar Pradesh",city:"Meerut",name:"Subharti Hospital",area:"NH-58",addr:"NH-58, Meerut",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"llrm",state:"Uttar Pradesh",city:"Meerut",name:"LLRM Medical College Hospital",area:"Garh Road",addr:"Garh Road, Meerut",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"lokpriya",state:"Uttar Pradesh",city:"Meerut",name:"Lokpriya Hospital",area:"Meerut",addr:"Meerut",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"fortis-fmri",state:"Haryana",city:"Gurugram",name:"Fortis Memorial Research Institute",area:"Sector 44",addr:"Sector 44, Gurugram",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"columbia-g",state:"Haryana",city:"Gurugram",name:"Columbia Asia Hospital Gurugram",area:"Palam Vihar",addr:"Palam Vihar, Gurugram",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"narayana-g",state:"Haryana",city:"Gurugram",name:"Narayana Superspeciality Hospital",area:"Sector 28",addr:"Sector 28, Gurugram",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"civil-g",state:"Haryana",city:"Gurugram",name:"Civil Hospital Gurugram",area:"Sector 10",addr:"Sector 10, Gurugram",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"fortis-f",state:"Haryana",city:"Faridabad",name:"Fortis Escorts Hospital Faridabad",area:"Sector 16",addr:"Sector 16, Faridabad",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"aims-f",state:"Haryana",city:"Faridabad",name:"Asian Institute of Medical Sciences",area:"Sector 21A",addr:"Sector 21A, Faridabad",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"qrg",state:"Haryana",city:"Faridabad",name:"QRG Health City",area:"Sector 16",addr:"Sector 16, Faridabad",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"civil-s",state:"Haryana",city:"Sonipat",name:"Civil Hospital Sonipat",area:"Sonipat",addr:"Sonipat",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"pgims",state:"Haryana",city:"Rohtak",name:"Pt. B.D. Sharma PGIMS",area:"Rohtak",addr:"Rohtak",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"aiims-j",state:"Haryana",city:"Jhajjar",name:"AIIMS Jhajjar",area:"Badsa",addr:"Badsa, Jhajjar",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"civil-b",state:"Haryana",city:"Bahadurgarh",name:"Civil Hospital Bahadurgarh",area:"Bahadurgarh",addr:"Bahadurgarh, Jhajjar",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"kcgmc",state:"Haryana",city:"Karnal",name:"Kalpana Chawla Government Medical College Hospital",area:"Karnal",addr:"Karnal",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"civil-k",state:"Haryana",city:"Karnal",name:"Civil Hospital Karnal",area:"Karnal",addr:"Karnal",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."},
+{id:"rgggh",state:"Rajasthan",city:"Alwar",name:"Rajiv Gandhi Government General Hospital",area:"Alwar",addr:"Alwar",amb:null,alt:[],src:"Name and area only. No verified emergency number added; dial 108 or 112."}
+];
+/* MediCareX: hospital capacity from public web sources (collected 19 Oct 2026)
+   Keys match the ids in your H array.
+   beds       = best available figure (number) or null if no reliable source found
+   bedsNote   = what the number means / conflicts
+   ambulances = number only where a hospital-specific count is published (AIIMS Delhi). null everywhere else.
+*/
+const CAPACITY = {
+  // ---- Delhi: government ----
+  "aiims":        {beds: 1956, bedsNote: "Lok Sabha figure (older). A later statement says +1,700 beds = 71% more, so current is roughly 2,400.", ambulances: 8, src: "eparlib.sansad.in; medicaldialogues.in"},
+  "safdarjung":   {beds: 2994, bedsNote: "2024 figure given to Lok Sabha", ambulances: null, src: "medboundtimes.com (MoS Health reply)"},
+  "rml":          {beds: 1538, bedsNote: "2024 figure given to Lok Sabha", ambulances: null, src: "medboundtimes.com (MoS Health reply)"},
+  "lady-hardinge":{beds: 1397, bedsNote: "Derived: 5,929 total for the 3 central hospitals minus Safdarjung and RML. Not stated directly.", ambulances: null, src: "medboundtimes.com"},
+  "loknayak":     {beds: 2102, bedsNote: "Sanctioned capacity 2019-20", ambulances: null, src: "delhiplanning.delhi.gov.in"},
+  "ddu":          {beds: 640,  bedsNote: "Sanctioned capacity 2019-20", ambulances: null, src: "delhiplanning.delhi.gov.in"},
+  "bsa":          {beds: 500,  bedsNote: "Sanctioned capacity 2019-20; may be higher now", ambulances: null, src: "delhiplanning.delhi.gov.in"},
+  "gtb":          {beds: 1571, bedsNote: "Single listing (admitted-patient beds)", ambulances: null, src: "housing.com"},
+
+  // ---- Delhi: private ----
+  "sgrh":         {beds: 675,  bedsNote: "Delhi govt record (2020)", ambulances: null, src: "health.delhi.gov.in list50bed.pdf"},
+  "apollo-d":     {beds: 650,  bedsNote: "Older listing; chain pages sometimes say 700+", ambulances: null, src: "Embassy of Japan hospital list"},
+  "max-p":        {beds: 402,  bedsNote: "Max says 400+; Bajaj Health lists 402 total, 23 ICU", ambulances: null, src: "maxhealthcare.com; bajajfinservhealth.in"},
+  "max-s":        {beds: 280,  bedsNote: "Max says 280+", ambulances: null, src: "maxhealthcare.com"},
+  "max-saket":    {beds: 530,  bedsNote: "Max says 530+ (Max Smart Saket is a separate 250+ bed unit)", ambulances: null, src: "maxhealthcare.com"},
+  "fortis-okhla": {beds: 310,  bedsNote: "Two sources agree", ambulances: null, src: "health.delhi.gov.in; logintohealth.com"},
+  "fortis-sb":    {beds: 150,  bedsNote: "Delhi govt record", ambulances: null, src: "health.delhi.gov.in list50bed.pdf"},
+  "manipal-dw":   {beds: 380,  bedsNote: "13 OTs, 118 critical care beds", ambulances: null, src: "logintohealth.com"},
+  "moolchand":    {beds: 1000, bedsNote: "Single listing; looks high, treat as unverified", ambulances: null, src: "housing.com"},
+  "venkateshwar": {beds: 325,  bedsNote: "325 beds incl. 100 critical care", ambulances: null, src: "biovoicenews.com"},
+  "aakash":       {beds: 230,  bedsNote: "230 beds incl. 70 critical care, 15 dialysis", ambulances: null, src: "bookimed.com"},
+  "rml-note":     undefined,
+  "jaipur-golden":{beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "metro-pv":     {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+
+  // ---- Uttar Pradesh ----
+  "surya":        {beds: 100,  bedsNote: "Listed as a 100-bed hospital", ambulances: null, src: "bajajfinservhealth.in"},
+  "kanha":        {beds: null, bedsNote: "No bed count on any listing found", ambulances: null, src: ""},
+  "paras-m":      {beds: 20,   bedsNote: "Listed as 20 beds", ambulances: null, src: "bajajfinservhealth.in"},
+  "manipal":      {beds: 100,  bedsNote: "100+ beds (old Columbia Asia Ghaziabad)", ambulances: null, src: "housing.com; logintohealth.com"},
+  "yashoda-i":    {beds: 625,  bedsNote: "625 operating (MD, Sept 2026). 1,200 is the planned full capacity in press releases.", ambulances: null, src: "businesstoday.in; biospectrumindia.com"},
+  "yashoda-k":    {beds: 106,  bedsNote: "Older ICRA report (unit was being expanded to about double)", ambulances: null, src: "icra.in"},
+  "yashoda-nn":   {beds: 306,  bedsNote: "Older ICRA report", ambulances: null, src: "icra.in"},
+  "max-v":        {beds: 370,  bedsNote: "Max says 370+", ambulances: null, src: "maxhealthcare.com"},
+  "paras-v":      {beds: 50,   bedsNote: "50 beds incl. 6 ICU", ambulances: null, src: "bajajfinservhealth.in"},
+  "lecrest":      {beds: null, bedsNote: "No bed count on listings found", ambulances: null, src: ""},
+  "santosh":      {beds: null, bedsNote: "No reliable bed count found", ambulances: null, src: ""},
+  "metro-n":      {beds: 289,  bedsNote: "Single listing", ambulances: null, src: "vaidam.com"},
+  "felix":        {beds: 250,  bedsNote: "Two listings agree", ambulances: null, src: "housing.com"},
+  "jaypee":       {beds: 525,  bedsNote: "525 commissioned (first phase); 1,200 was the planned full size", ambulances: null, src: "bookimed.com"},
+  "fortis-n":     {beds: 236,  bedsNote: "Fortis page: 236 beds, 92 ICU, 12 OTs. Ambulance helpline 900 900 1050 (no fleet count).", ambulances: null, src: "fortishealthcare.com"},
+  "kailash-n":    {beds: 325,  bedsNote: "Single listing", ambulances: null, src: "vaidam.com"},
+  "dist-noida":   {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "apollo-n":     {beds: null, bedsNote: "Apollo's own page gives no bed count", ambulances: null, src: ""},
+  "yatharth-n":   {beds: 250,  bedsNote: "Yatharth Noida unit (company investor presentation, Aug 2025)", ambulances: null, src: "nseindia.com Yatharth Q1 FY26 presentation"},
+  "yatharth-gn":  {beds: 450,  bedsNote: "Yatharth Noida Extension unit (investor presentation, Aug 2025), expandable to 700", ambulances: null, src: "nseindia.com Yatharth Q1 FY26 presentation"},
+  "sharda":       {beds: 900,  bedsNote: "Single listing", ambulances: null, src: "vaidam.com"},
+  "gims":         {beds: 500,  bedsNote: "GIMS site: capacity of 500 beds", ambulances: null, src: "gims.ac.in"},
+  "anand":        {beds: null, bedsNote: "No bed count found", ambulances: null, src: ""},
+  "subharti":     {beds: 938,  bedsNote: "Hospital's own site: 938 (750 teaching, 167 critical care, 21 private). Other listings say 1,097 or 1,250+.", ambulances: null, src: "medical.subharti.org"},
+  "llrm":         {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "lokpriya":     {beds: 150,  bedsNote: "Described as a 150-bed super speciality hospital", ambulances: null, src: "apps.searo.who.int"},
+  "madhu":        {beds: null, bedsNote: "No bed count found", ambulances: null, src: ""},
+
+  // ---- Haryana ----
+  "medanta":      {beds: 1600, bedsNote: "1,600+ (Medanta-linked listing); some sites say 1,250", ambulances: null, src: "starex-medx.lovable.app; myhospitalnow.com"},
+  "fortis-fmri":  {beds: 311,  bedsNote: "Fortis page: 311 beds (banner says 310), 105 ICU, 15 OTs. Larger figures like 1,000 are planned/expandable capacity.", ambulances: null, src: "fortishealthcare.com"},
+  "artemis":      {beds: 400,  bedsNote: "400 beds (housing.com). Some newer pages say 750+; the company announced a Rs 700 crore raise to expand.", ambulances: null, src: "housing.com; distilinfo.com"},
+  "paras-g":      {beds: 300,  bedsNote: "300 incl. 80 ICU (another site says 250+)", ambulances: null, src: "starex-medx.lovable.app"},
+  "max-g":        {beds: null, bedsNote: "No reliable official figure found", ambulances: null, src: ""},
+  "park-g":       {beds: null, bedsNote: "Park group Gurugram total is about 650 beds (Palam Vihar unit 225). South City 2 unit not itemised.", ambulances: null, src: "nseindia.com Park Medi World notice"},
+  "narayana-g":   {beds: 211,  bedsNote: "211 operational beds", ambulances: null, src: "medicaldialogues.in"},
+  "columbia-g":   {beds: null, bedsNote: "Only group total available (1,085 beds across 11 hospitals)", ambulances: null, src: "icra.in"},
+  "civil-g":      {beds: 200,  bedsNote: "200 beds incl. ICU (Nov 2024 report)", ambulances: null, src: "tribuneindia.com"},
+  "fortis-f":     {beds: 210,  bedsNote: "Listed as 210 beds", ambulances: null, src: "logintohealth.com"},
+  "metro-f":      {beds: null, bedsNote: "Only listing found says 2,500+ which is a chain figure, not this hospital", ambulances: null, src: ""},
+  "civil-f":      {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "aims-f":       {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "qrg":          {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "ujala":        {beds: null, bedsNote: "No bed count found on hospital or CGHS pages", ambulances: null, src: ""},
+  "civil-s":      {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "pgims":        {beds: 1597, bedsNote: "Described as a 1,597-bed hospital", ambulances: null, src: "en.wikipedia.org"},
+  "aiims-j":      {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "civil-b":      {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+  "kcgmc":        {beds: 536,  bedsNote: "More than 536 beds, to be raised to 700 in phases", ambulances: null, src: "kcgmc.edu.in"},
+  "civil-k":      {beds: null, bedsNote: "No reliable figure found", ambulances: null, src: ""},
+
+  // ---- Rajasthan ----
+  "global-a":     {beds: null, bedsNote: "No bed count found", ambulances: null, src: ""},
+  "hariram":      {beds: null, bedsNote: "Listing gives no bed count", ambulances: null, src: ""},
+  "rgggh":        {beds: null, bedsNote: "No reliable figure found for the Alwar hospital", ambulances: null, src: ""}
+};
+delete CAPACITY["rml-note"];
+
+/* Ambulance counts: what actually exists online */
+const AMB_NOTES = {
+  "aiims": "AIIMS Delhi: 8 ACLS ambulances (6 + 2 added; undated news, basic ambulances not counted)",
+  "manipal": "Manipal Hospitals (MARS): 30+ ambulances across the whole country, not per hospital",
+  "medanta": "Medanta runs ICU, 5G, neonatal and air ambulances; fleet size not published. Helpline 1068.",
+  "fortis-n": "Fortis Noida ambulance helpline 900 900 1050; fleet size not published",
+  "delhi-cats": "Delhi govt CATS fleet: 351 ambulances city-wide (Apr 2026), not tied to one hospital",
+  "general": "No hospital in this list publishes its own ambulance count"
+};
+
+const STATES={};STATE_ORDER.forEach(s=>{STATES[s]=[]});
+H.forEach(x=>{if(STATES[x.state].indexOf(x.city)<0)STATES[x.state].push(x.city)});
+
+let lang="en",state="Uttar Pradesh",city="Muradnagar",hid="surya",left=300,last=new Date(),cur="login",user="",role="staff",tab="dash";
+let selBed=null,selDoc=null,selMed=null,nfilter="open",pq="",dq="",dd="All";
+const $=id=>document.getElementById(id);
+const t=k=>(T[lang]&&T[lang][k])||T.en[k]||k;
+const NOW=Date.now(),DAY=864e5,DAYS=["Mon","Tue","Wed","Thu","Fri","Sat"];
+const pad=(n,l=2)=>String(n).padStart(l,"0");
+const fts=ts=>new Date(ts).toLocaleString(lang==="hi"?"hi-IN":"en-IN",{dateStyle:"medium",timeStyle:"short"});
+const fdate=ts=>new Date(ts).toLocaleDateString("en-IN",{dateStyle:"medium"});
+function tel(n){const d=n.replace(/\D/g,"");if(d.length<=4||d.indexOf("1800")===0)return d;if(d[0]==="0")return"+91"+d.slice(1);return"+91"+d}
+function h(tag,a,...kids){const e=document.createElement(tag);for(const k in (a||{})){const v=a[k];if(k==="class")e.className=v;else if(k.indexOf("on")===0)e[k]=v;else if(v===true)e.setAttribute(k,"");else if(v!==false&&v!=null)e.setAttribute(k,v)}
+  kids.flat(2).forEach(c=>{if(c==null||c===false)return;e.append(c.nodeType?c:document.createTextNode(String(c)))});return e}
+
+/* ---------- fictional demo data ---------- */
+function hash(s){let x=2166136261;for(const c of s){x^=c.charCodeAt(0);x=Math.imul(x,16777619)}return x>>>0}
+function rng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const FN=["Aarav","Diya","Kabir","Meera","Rohan","Ishita","Vivaan","Anaya","Arjun","Saanvi","Reyansh","Myra","Aditya","Kiara","Dev","Tara","Neel","Riya","Yash","Zoya"];
+const LN=["Rao","Mehta","Kulkarni","Bose","Nair","Chauhan","Verma","Iyer","Sethi","Ghosh","Pillai","Das","Malik","Joshi","Bhat","Kapoor"];
+const DB={};
+const mflags=m=>{const f=[];if(m.qty===0)f.push("Zero stock");else if(m.qty<=m.min)f.push("Low stock");if(m.exp<NOW)f.push("Expired");else if(m.exp-NOW<=60*DAY)f.push("Near expiry");return f};
+const DIS=["Dengue fever","Typhoid","Pneumonia","Fractured leg","Hypertension","Type 2 diabetes","Appendicitis","Asthma attack","Gastroenteritis","Migraine"];
+const RXL=[["Paracetamol 500 mg","1 tablet","3 times a day"],["Amoxicillin 500 mg","1 capsule","2 times a day"],["Pantoprazole 40 mg","1 tablet","before breakfast"],["ORS sachet","1 sachet in water","after each loose motion"],["Atorvastatin 20 mg","1 tablet","at night"],["Salbutamol inhaler","2 puffs","when breathless"],["Ondansetron 4 mg","1 tablet","when nauseous"]];
+const RTYPES=["MRI","Ultrasound","X-ray","CT scan","Blood test","ECG","Prescription","Other"];
+const INR=n=>"₹"+Number(n||0).toLocaleString("en-IN");
+let selPat=null;
+function ensureP(p){p.mob=p.mob||"";p.dis=p.dis||"";p.bill=p.bill||{total:0,paid:0};p.rx=p.rx||[];p.files=p.files||[]}
+function openFile(f){fetch(f.data).then(r=>r.blob()).then(bl=>{const w=window.open(URL.createObjectURL(bl),"_blank");if(!w)say("Allow pop-ups to open the file, or use Download.",true)}).catch(()=>say("Could not open the file.",true))}
+function seed(hs){
+  const r=rng(hash(hs.id)),pk=a=>a[Math.floor(r()*a.length)],ri=(a,b)=>a+Math.floor(r()*(b-a+1));
+  const code=hs.id.replace(/[^a-z]/g,"").slice(0,3).toUpperCase(),mins=m=>NOW-m*60000;
+  const D={code,patients:[],beds:[],docs:[],meds:[],amb:[],notes:[],log:[],ids:{p:1,n:1},upd:{beds:mins(ri(3,40)),docs:mins(ri(60,400)),meds:mins(ri(30,300)),amb:mins(ri(2,30))}};
+  const newP=(st,age,sex)=>{const adm=st!=="Registered",tot=adm?ri(20,600)*100:0;const p={id:code+"-P"+pad(D.ids.p++,3),name:pk(FN)+" "+pk(LN),age,sex,status:st,bed:null,hist:[],dis:adm?pk(DIS):"",bill:{total:tot,paid:adm?Math.round(tot*r()*.8/100)*100:0},rx:adm?[0,1].map(()=>{const m=pk(RXL);return{name:m[0],dose:m[1],freq:m[2],days:ri(3,10)}}):[],files:[]};D.patients.push(p);return p};
+  const cap=(typeof CAPACITY!=="undefined"&&CAPACITY[hs.id])||{},R=cap.beds||0;
+  let WARDS=[["Emergency","E",8],["ICU","I",6],["General Ward","G",14],["Maternity","M",6]];
+  if(R){const e=Math.max(1,Math.round(R*.1)),i=Math.max(1,Math.round(R*.12)),m=Math.max(1,Math.round(R*.08));WARDS=[["Emergency","E",e],["ICU","I",i],["General Ward","G",Math.max(1,R-e-i-m)],["Maternity","M",m]]}
+  WARDS.forEach(w=>{
+    for(let i=1;i<=w[2];i++){
+      const b={id:w[1]+"-"+pad(i),ward:w[0],status:"Available",pid:null},x=r();
+      if(x<.52){b.status="Occupied";const mat=w[0]==="Maternity";
+        const p=newP("Admitted",mat?ri(20,38):w[0]==="ICU"?ri(35,88):ri(3,85),mat?"F":pk(["M","F"]));
+        p.bed=b.id;p.hist.push({ts:mins(ri(30,3000)),ev:"Admitted",bed:b.id});b.pid=p.id}
+      else if(x<.6)b.status="Cleaning";else if(x<.66)b.status="Maintenance";
+      D.beds.push(b)}});
+  for(let i=0;i<3;i++){const p=newP("Discharged",ri(5,80),pk(["M","F"])),bid=pk(D.beds).id;p.hist.push({ts:mins(ri(4000,9000)),ev:"Admitted",bed:bid},{ts:mins(ri(100,3900)),ev:"Discharged",bed:bid})}
+  for(let i=0;i<3;i++)newP("Registered",ri(8,75),pk(["M","F"]));
+  [["Emergency Medicine","Emergency"],["Cardiology","Cardiology"],["Orthopaedics","Orthopaedics"],["Paediatrics","Paediatrics"],["General Medicine","OPD"],["Radiology","Radiology"],["Obstetrics and Gynaecology","Maternity"],["Anaesthesia","ICU"],["General Surgery","Surgery"],["Pathology","Laboratory"]].forEach((s,i)=>{
+    const days=DAYS.filter(()=>r()<.55);while(days.length<3){const d=pk(DAYS);if(days.indexOf(d)<0)days.push(d)}days.sort((a,b)=>DAYS.indexOf(a)-DAYS.indexOf(b));
+    const st=pk(["08:00","09:00","10:00","14:00"]);
+    D.docs.push({id:"D"+(i+1),name:"Dr. "+pk(FN)+" "+pk(LN),spec:s[0],dept:s[1],ext:"Ext "+(2100+i),status:r()<.75?"Available":pk(["On leave","In surgery"]),slots:days.map(d=>({day:d,start:st,end:pad(parseInt(st)+6)+":00"}))})});
+  [["Paracetamol 500 mg tablets",600,150],["Amoxicillin 500 mg capsules",320,100],["ORS sachets",240,80],["Normal saline 500 ml",400,120],["Insulin regular vial",40,15],["Atorvastatin 20 mg tablets",260,90],["Pantoprazole 40 mg tablets",300,100],["Salbutamol inhaler",55,20],["Adrenaline 1 mg ampoule",36,20],["Ondansetron 4 mg tablets",180,60]].forEach((m,i)=>{
+    const q=Math.round(m[1]*(.4+r()*1.2));D.meds.push({id:"M"+(i+1),name:m[0],qty:q,min:m[2],exp:NOW+ri(120,900)*DAY,moves:[{ts:mins(ri(500,5000)),kind:"Receipt",qty:q,note:"Opening stock (demo)"}]})});
+  D.meds[4].qty=0;D.meds[7].qty=D.meds[7].min-3;D.meds[2].exp=NOW+ri(10,40)*DAY;D.meds[9].exp=NOW-ri(3,20)*DAY;
+  (cap.ambulances?Array.from({length:cap.ambulances},()=>"Advanced Life Support"):["Basic Life Support","Advanced Life Support","Patient Transport","Neonatal","Basic Life Support"]).forEach((ty,i)=>D.amb.push({id:"AMB-"+pad(i+1),reg:"DEMO-"+code+"-"+pad(i+1,3),type:ty,driver:pk(FN)+" "+pk(LN),ext:"Ext "+(3100+i),status:pk(["Available","Available","On Duty","Maintenance"]),upd:mins(ri(5,600))}));
+  D.fac=[["Emergency","Ground floor, Block A","24 hours","Ext 2001","Casualty and triage, resuscitation bays."],["OPD","Ground floor, Block B","09:00 to 17:00 (Mon to Sat)","Ext 2010","Outpatient consultation rooms and registration."],["Radiology","First floor, Block A","24 hours","Ext 2030","X-ray, ultrasound and CT."],["Laboratory","First floor, Block B","24 hours","Ext 2040","Blood, urine and routine tests."],["Pharmacy","Ground floor, near entrance","24 hours","Ext 2050","In-house dispensing counter."],["ICU","Second floor, Block A","24 hours","Ext 2060","Intensive care unit."],["Maternity","Third floor, Block B","24 hours","Ext 2070","Labour room and postnatal ward."],["Blood Bank","Basement, Block A","08:00 to 20:00","Ext 2080","Storage and issue of blood units."]];
+  D.meds.forEach(m=>mflags(m).forEach(f=>D.notes.push({id:D.ids.n++,ts:mins(ri(10,600)),type:"Stock",msg:m.name+": "+f.toLowerCase()+".",st:"New",ack:null})));
+  D.notes.push({id:D.ids.n++,ts:mins(ri(10,120)),type:"Beds",msg:"Several beds are waiting for cleaning.",st:"New",ack:null},{id:D.ids.n++,ts:mins(ri(100,500)),type:"Schedule",msg:"Doctor schedules were updated for the coming week.",st:"New",ack:null});
+  D.log.push({ts:mins(ri(5,25)),actor:"System",action:"Demo data loaded",entity:hs.name});
+  return D}
+const HS=()=>H.filter(x=>x.id===hid)[0];
+const D=()=>{if(!DB[hid]){DB[hid]=seed(HS());if(canW())persist();else initRemote(hid)}return DB[hid]};
+const canW=()=>role!=="viewer";
+function say(msg,bad){const m=$("msg");m.textContent=msg||"";m.className="msg"+(msg?(bad?" bad":" ok"):"")}
+function logit(d,action,entity){d.log.unshift({ts:Date.now(),actor:(user||"Guest")+" ("+t(role[0].toUpperCase()+role.slice(1))+")",action,entity});persist()}
+/* ---------- backend API (Express server) ---------- */
+function apiFetch(url,opt){opt=opt||{};opt.headers=Object.assign({"Content-Type":"application/json"},opt.headers||{});if(TOKEN)opt.headers.Authorization="Bearer "+TOKEN;
+  return fetch(url,opt).then(r=>{if(r.status===401&&TOKEN){sessionExpired();throw new Error("auth")}return r})}
+function sessionExpired(){TOKEN="";closeLive();authed=false;try{sessionStorage.removeItem("mc-sess")}catch(e){}if(cur!=="login"){show("login");$("lerr").textContent=t("eExpired")}}
+let ptimer=null,lastSig="";
+function persist(){if(!TOKEN||!canW())return;DIRTY[hid]=1;clearTimeout(ptimer);ptimer=setTimeout(flush,300)}
+const VER={};
+/* "Next refresh in" follows the server's 5-minute clock, so every browser shows the same countdown */
+function syncTick(j){if(j&&j.nextTick&&j.serverTime)left=Math.max(3,Math.round((j.nextTick-j.serverTime)/1000)+2)}
+function initRemote(id){if(!TOKEN||!DB[id])return;
+  apiFetch("/api/db/"+id+"/init",{method:"POST",body:JSON.stringify({data:DB[id]})}).then(r=>r.json()).then(j=>{
+    if(j&&j.existing)return loadDB().then(()=>renderAll());
+    if(j&&j.version!=null)VER[id]=j.version}).catch(()=>{})}
+function flush(){clearTimeout(ptimer);const ids=Object.keys(DIRTY);if(!ids.length)return Promise.resolve();
+  return Promise.all(ids.map(id=>{delete DIRTY[id];if(!DB[id])return;
+    return apiFetch("/api/db/"+id,{method:"PUT",body:JSON.stringify({data:DB[id],base:VER[id]||0})}).then(r=>r.json().catch(()=>({})).then(j=>{
+      if(r.ok){VER[id]=j.version;return}
+      if(r.status===409){delete DB[id];say("Someone else just updated this hospital. Latest data loaded. Please repeat your change.",true);return loadDB().then(()=>{renderAll()})}
+      say("Could not save to the server (error "+r.status+").",true)})).catch(()=>{})}))}
+function loadDB(){if(!TOKEN)return Promise.resolve();
+  return flush().then(()=>apiFetch("/api/db")).then(r=>r.ok?r.json():null).then(j=>{if(!j)return;lastSig=JSON.stringify(j.db);syncTick(j);
+    Object.keys(DB).forEach(k=>{if(!(k in j.db)&&!DIRTY[k])delete DB[k]});
+    Object.keys(j.db).forEach(k=>{DB[k]=j.db[k];VER[k]=(j.versions||{})[k]||0});connectLive()}).catch(()=>{})}
+function delRemote(id){if(TOKEN&&canW()){VER[id]=0;apiFetch("/api/db/"+id,{method:"DELETE"}).catch(()=>{})}}
+/* ---------- live push from server (Server-Sent Events) ---------- */
+let ES=null,esTok="",liveWait=null;
+function setLive(on){const s=$("stamp");if(s)s.title=on?"Live: changes from other staff appear instantly":"Live connection lost, retrying"}
+function connectLive(){if(!TOKEN||(ES&&esTok===TOKEN))return;closeLive();esTok=TOKEN;
+  ES=new EventSource("/api/events?t="+encodeURIComponent(TOKEN));
+  ES.onopen=()=>setLive(true);
+  ES.onerror=()=>setLive(false);
+  ES.addEventListener("update",ev=>{let m;try{m=JSON.parse(ev.data)}catch(e){return}
+    if(m.version&&VER[m.hid]===m.version)return; /* our own save, already have it */
+    applyLive(m)})}
+function closeLive(){if(ES){ES.close();ES=null}esTok="";clearTimeout(liveWait)}
+function applyLive(m){clearTimeout(liveWait);
+  const a=document.activeElement;
+  if(Object.keys(DIRTY).length||(a&&/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName))){liveWait=setTimeout(()=>applyLive(m),2000);return}
+  apiFetch("/api/db").then(r=>r.ok?r.json():null).then(j=>{if(!j)return;lastSig=JSON.stringify(j.db);syncTick(j);
+    Object.keys(DB).forEach(k=>{if(!(k in j.db))delete DB[k]});
+    Object.keys(j.db).forEach(k=>{DB[k]=j.db[k];VER[k]=(j.versions||{})[k]||0});
+    stamp();if(!$("dash").hidden){renderAll();const mm=$("main");mm.classList.remove("flash");void mm.offsetWidth;mm.classList.add("flash")}
+    if(m.auto)say("Auto-update: beds, patients and stock were refreshed.");
+    else if(canW()&&m.by)say("Live update from "+m.by+".")}).catch(()=>{})}
+function note(d,type,msg){d.notes.unshift({id:d.ids.n++,ts:Date.now(),type,msg,st:"New",ack:null})}
+function guard(){if(!canW()){say("Viewer role is read only. Switch to Staff or Admin to make changes.",true);return false}return true}
+function badge(txt,cls){return h("span",{class:"badge "+cls},txt)}
+function tbl(head,rows){return h("div",{class:"scroll"},h("table",{class:"tbl"},h("thead",{},h("tr",{},head.map(x=>h("th",{},t(x))))),h("tbody",{},rows)))}
+function td(...k){return h("td",{},...k)}
+
+/* ---------- tabs ---------- */
+const TABS=[["dash","Dashboard"],["pat","Patient Records"],["beds","Beds & Admissions"],["doc","Doctors & Schedules"],["med","Medicine Inventory"],["amb","Ambulances"],["fac","Facilities & Departments"],["not","Notifications"],["log","Activity Log"],["adm","Administration & Access"]];
+function renderTabs(){
+  const n=D().notes.filter(x=>x.st!=="Resolved").length,nav=$("tabs");nav.innerHTML="";
+  TABS.forEach(x=>{const b=h("button",{role:"tab","aria-selected":x[0]===tab,onclick:()=>{tab=x[0];say("");renderTabs();renderTab()}},(x[0]==="pat"&&ltype==="patient")?"My Records":t(x[1]));
+    if(x[0]==="not"&&n)b.append(h("span",{class:"count"},n));nav.append(b)})}
+function renderTab(){
+  const b=$("tabbody");b.innerHTML="";
+  ({dash:rDash,pat:rPat,beds:rBeds,doc:rDoc,med:rMed,amb:rAmb,fac:rFac,not:rNot,log:rLog,adm:rAdm})[tab](D(),b)}
+function afterChange(){renderTabs();renderTab()}
+
+function rContact(b){
+  const s=HS();
+  b.append(h("h2",{style:"font-size:clamp(22px,4vw,30px);font-weight:800"},s.name),h("p",{class:"sub"},s.area+", "+s.city+", "+s.state));
+  if(s.amb){
+    b.append(h("div",{class:"amb"},h("p",{class:"lbl"},t("amb")),h("div",{class:"num"},s.amb),
+      h("div",{class:"row"},h("a",{class:"call",href:"tel:"+tel(s.amb)},t("call")),
+        h("button",{class:"btn",onclick:ev=>{const bt=ev.target;try{navigator.clipboard.writeText(s.amb).then(()=>{bt.textContent=t("copied");setTimeout(()=>{bt.textContent=t("copy")},1500)},()=>{})}catch(x){}}},t("copy")))))
+  }else b.append(h("div",{class:"none"},t("none")));
+  if(s.alt.length){const p=h("p",{class:"alts"},t("alt")+": ");s.alt.forEach((a,i)=>{p.append(document.createTextNode((i?"  ·  ":"")+a[0]+" "),h("span",{class:"mono"},a[1]))});b.append(p)}
+  const f=h("dl",{class:"facts"});const add=(k,v)=>f.append(h("div",{},h("dt",{},t(k)),h("dd",{},v)));
+  add("addr",s.addr);if(s.h24)add("hours",t("h24"));
+  const cp=CAPACITY[s.id];
+  add("bedsT",cp&&cp.beds?cp.beds.toLocaleString("en-IN")+" ("+cp.bedsNote+")":(t("bedsNA")+(cp&&cp.bedsNote?": "+cp.bedsNote:"")));
+  add("ambC",AMB_NOTES[s.id]||t("ambNA"));
+  add("src",s.src);
+  b.append(f,h("div",{class:"nat"},[["112",t("all")],["108",t("amb108")],["102",t("mom")]].map(p=>h("div",{},h("b",{},p[0]),h("span",{},p[1])))));
+}
+function tile(label,val,sub,cls){return h("div",{class:"tile "+(cls||"")},h("b",{},val),h("span",{},t(label)+(sub?" · "+sub:"")))}
+function rDash(d,b){
+  rContact(b);
+  const cnt=s=>d.beds.filter(x=>x.status===s).length,tot=d.beds.length;
+  const docA=d.docs.filter(x=>x.status==="Available").length,am=s=>d.amb.filter(x=>x.status===s).length;
+  const medAl=d.meds.filter(m=>mflags(m).length).length,open=d.notes.filter(x=>x.st!=="Resolved").length;
+  b.append(h("div",{class:"sec"},h("h3",{},t("Dashboard")),h("div",{class:"kpis"},
+    tile("Total beds",tot),tile("Occupied",cnt("Occupied")),tile("Available",cnt("Available")),tile("Cleaning",cnt("Cleaning"),"","warn"),tile("Maintenance",cnt("Maintenance")),
+    tile("Doctors available",docA+"/"+d.docs.length),
+    tile("Ambulances",am("Available")+"/"+d.amb.length,am("On Duty")+" on duty, "+am("Maintenance")+" maintenance"),
+    tile("Medicine alerts",medAl,"","warn"),tile("Open alerts",open,"",open?"bad":""))));
+  const sec=h("div",{class:"sec"},h("h3",{},t("Ward occupancy")));
+  ["Emergency","ICU","General Ward","Maternity"].forEach(w=>{
+    const bs=d.beds.filter(x=>x.ward===w),c=s=>bs.filter(x=>x.status===s).length,n=bs.length;
+    sec.append(h("div",{class:"wardrow"},h("span",{},w),h("div",{class:"stack",role:"img","aria-label":w+": "+c("Occupied")+" of "+n+" occupied"},
+      h("i",{class:"sOcc",style:"width:"+c("Occupied")/n*100+"%"}),h("i",{class:"sCln",style:"width:"+c("Cleaning")/n*100+"%"}),h("i",{class:"sMnt",style:"width:"+c("Maintenance")/n*100+"%"}),h("i",{class:"sAvl",style:"width:"+c("Available")/n*100+"%"})),
+      h("span",{class:"mono"},c("Occupied")+"/"+n+" ("+Math.round(c("Occupied")/n*100)+"%)")))});
+  sec.append(h("div",{class:"legend"},[["sOcc","Occupied"],["sCln","Cleaning"],["sMnt","Maintenance"],["sAvl","Available"]].map(x=>h("span",{},h("i",{class:x[0]}),t(x[1])))));
+  b.append(sec);
+  const ra=h("div",{class:"sec"},h("h3",{},t("Recent activity")),
+    tbl(["Time","Actor","Action","Record"],d.log.slice(0,6).map(l=>h("tr",{},td(fts(l.ts)),td(l.actor),td(l.action),td(l.entity)))),
+    h("p",{class:"fine"},t("Last updated")+": "+t("Beds")+" "+fts(d.upd.beds)+" · "+t("Doctors")+" "+fts(d.upd.docs)+" · "+t("Medicines")+" "+fts(d.upd.meds)+" · "+t("Ambulances")+" "+fts(d.upd.amb)));
+  b.append(ra)}
+
+function rPat(d,b){
+  if(!canW()){if(ltype==="patient"){rMine(b);return}b.append(h("div",{class:"lock"},h("b",{},t("Staff only")),h("p",{},t("Patient records are a protected staff page. Switch the role to Staff or Admin.")))) ;return}
+  d.patients.forEach(ensureP);
+  const q=h("input",{id:"pq",type:"search",placeholder:"ID or name",value:pq,oninput:ev=>{pq=ev.target.value;list()}});
+  b.append(h("h3",{},t("Patient Records")),h("p",{class:"sub"},"Doctor and Staff can see and update disease, bill, medicines and upload reports (MRI, ultrasound, X-ray and more). Demo only: everything stays in this browser tab."),
+    h("div",{class:"inl"},h("label",{},t("Search"),q)));
+  const rf=h("form",{class:"inl",style:"margin-top:12px",onsubmit:ev=>{ev.preventDefault();
+      const n=$("rn").value.trim(),a=Number($("ra").value),mob=$("rm").value.trim();
+      if(n.length<2){say("Enter the patient's name.",true);return}
+      if(mob&&!/^[6-9][0-9]{9}$/.test(mob)){say("Enter a valid 10-digit patient mobile number, or leave it empty.",true);return}
+      if(!Number.isInteger(a)||a<0||a>120){say("Age must be a whole number from 0 to 120.",true);return}
+      const p={id:d.code+"-P"+pad(d.ids.p++,3),name:n,age:a,sex:$("rs").value,status:"Registered",bed:null,hist:[],mob:mob,dis:"",bill:{total:0,paid:0},rx:[],files:[]};d.patients.push(p);
+      logit(d,"Registered patient",p.id);say("Registered "+p.id+".");renderTab()}},
+    h("label",{},"Name",h("input",{id:"rn",type:"text",maxlength:"40"})),h("label",{},"Age",h("input",{id:"ra",type:"number",min:"0",max:"120",style:"width:80px"})),h("label",{},"Patient mobile (for patient login)",h("input",{id:"rm",type:"tel",inputmode:"numeric",maxlength:"10",style:"width:150px"})),
+    h("label",{},"Sex",h("select",{id:"rs"},h("option",{value:"F"},"F"),h("option",{value:"M"},"M"))),h("button",{class:"btn",type:"submit"},"Register patient"));
+  const box=h("div",{class:"sec",id:"plist"}),det=h("div",{id:"pdet"});b.append(rf,box,det);
+  function list(){box.innerHTML="";const s=pq.trim().toLowerCase();
+    const rows=d.patients.filter(p=>!s||p.id.toLowerCase().indexOf(s)>=0||p.name.toLowerCase().indexOf(s)>=0).map(p=>{
+      const due=Math.max(0,p.bill.total-p.bill.paid);
+      return h("tr",{},td(h("span",{class:"mono"},p.id)),td(p.name),td(p.age+" / "+p.sex),td(badge(p.status,p.status==="Admitted"?"b-ok":"b-mute")),td(p.bed||"-"),td(p.dis||"-"),
+        td(due>0?badge(INR(due),"b-bad"):(p.bill.total?badge("Paid","b-ok"):"-")),td(p.files.length),
+        td(h("button",{class:"btn sm",onclick:()=>{selPat=p.id;renderTab();setTimeout(()=>{const e=$("pdet");if(e)e.scrollIntoView({behavior:"smooth"})},0)}},"Open")))});
+    box.append(rows.length?tbl(["ID","Name","Age / Sex","Status","Bed","Disease","Bill due","Reports","Details"],rows):h("p",{class:"sub"},"No patient matches."))}
+  list();
+  const sp=d.patients.filter(x=>x.id===selPat)[0];
+  if(sp)pdetail(d,sp,det)}
+
+
+function pgal(d,p,ro){
+  return p.files.length?h("div",{style:"display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-top:12px"},p.files.map((f,i)=>
+    h("div",{class:"tile"},
+      f.mime.indexOf("image/")===0?h("img",{src:f.data,alt:f.kind+" "+f.name,style:"width:100%;height:110px;object-fit:cover;border-radius:8px;cursor:pointer;display:block",onclick:()=>openFile(f)}):h("div",{style:"height:110px;display:grid;place-items:center;border:1px dashed var(--line);border-radius:8px;font-weight:700;cursor:pointer",onclick:()=>openFile(f)},"PDF"),
+      h("div",{style:"margin-top:6px"},badge(f.kind,"b-ok")),
+      h("span",{style:"display:block;word-break:break-all"},f.name),
+      h("span",{style:"display:block"},fts(f.ts)+" · "+f.by),
+      f.note?h("span",{style:"display:block"},f.note):null,
+      h("div",{class:"inl",style:"margin-top:6px"},
+        h("button",{class:"btn sm",type:"button",onclick:()=>openFile(f)},"View"),
+        h("a",{class:"btn sm",href:f.data,download:f.name,style:"text-decoration:none;color:var(--ink)"},"Download"),
+        ro?null:h("button",{class:"btn sm danger",type:"button",onclick:()=>{if(!guard())return;p.files.splice(i,1);logit(d,"Report deleted",p.id+" "+f.kind);say("File deleted.");renderTab()}},"Delete"))))):h("p",{class:"sub"},"No reports uploaded yet.")}
+
+function rMine(b){
+  b.append(h("h3",{},"My Records"),h("p",{class:"sub"},"Your disease, bill, medicines and reports added by your doctor or hospital staff. You can only view them."),
+    h("div",{class:"inl"},h("button",{class:"btn",type:"button",onclick:()=>{loadDB().then(()=>{say("Records refreshed.");renderTab()})}},"Refresh my records")));
+  if(!umobile){b.append(h("p",{class:"sub",style:"margin-top:12px"},"You are a guest. Login with your name, mobile number and Gmail to see your records."));return}
+  const mine=[];
+  Object.keys(DB).forEach(k=>{const hs=H.filter(x=>x.id===k)[0];if(!hs)return;DB[k].patients.forEach(p=>{if(p.mob===umobile)mine.push({hs:hs,p:p,d:DB[k]})})});
+  if(!mine.length){b.append(h("p",{class:"sub",style:"margin-top:12px"},"No record found for +91 "+umobile+". Ask the hospital staff to add this mobile number to your patient record, then press Refresh my records."));return}
+  mine.forEach(o=>{const p=o.p;ensureP(p);const due=Math.max(0,p.bill.total-p.bill.paid),sec=h("div",{class:"sec"});
+    sec.append(h("h3",{},o.hs.name),h("p",{class:"sub"},p.name+" ("+p.id+") · "+p.age+" / "+p.sex+" · "+p.status+(p.bed?" · Bed "+p.bed:"")),
+      h("p",{},h("b",{},"Disease / diagnosis: "),p.dis||"Not added yet"),
+      h("div",{class:"kpis"},tile("Total bill",INR(p.bill.total)),tile("Paid",INR(p.bill.paid)),tile("Due",INR(due),"",due?"bad":"")),
+      h("h3",{style:"font-size:15px;margin-top:18px"},"Medicines to take"),
+      p.rx.length?tbl(["Medicine","Dose","When","Days"],p.rx.map(m=>h("tr",{},td(m.name),td(m.dose),td(m.freq),td(m.days)))):h("p",{class:"sub"},"No medicines added yet."),
+      h("h3",{style:"font-size:15px;margin-top:18px"},"Reports and photos"),pgal(o.d,p,true));
+    const hist=p.hist.slice().sort((x,y)=>y.ts-x.ts);
+    sec.append(h("h3",{style:"font-size:15px;margin-top:18px"},"Admission history"),hist.length?tbl(["Time","Event","Bed"],hist.map(e=>h("tr",{},td(fts(e.ts)),td(e.ev),td(e.bed)))):h("p",{class:"sub"},"None"));
+    b.append(sec)})}
+
+function pdetail(d,p,b){
+  const sec=h("div",{class:"sec"}),due=Math.max(0,p.bill.total-p.bill.paid);
+  sec.append(h("h3",{},"Patient details: "+p.name+" ("+p.id+")"),h("p",{class:"sub"},p.age+" / "+p.sex+" \u00b7 "+p.status+(p.bed?" \u00b7 Bed "+p.bed:"")));
+  if(!p.mob)sec.append(h("p",{class:"msg bad"},"This record has no patient mobile number yet. The patient cannot see it in My Records until you enter their mobile number below."));
+  /* disease and bill */
+  sec.append(h("h3",{style:"font-size:15px"},"Disease and bill"),
+    h("form",{class:"inl",onsubmit:ev=>{ev.preventDefault();if(!guard())return;
+      const tt=Number($("pd-t").value||0),pp=Number($("pd-p").value||0);
+      if(!(tt>=0)||!(pp>=0)){say("Bill amounts must be zero or more.",true);return}
+      if(pp>tt){say("Paid amount cannot be more than the total bill.",true);return}
+      const mo=$("pd-m").value.trim();if(mo&&!/^[6-9][0-9]{9}$/.test(mo)){say("Enter a valid 10-digit patient mobile number.",true);return}p.mob=mo;
+      p.dis=$("pd-d").value.trim();p.bill={total:tt,paid:pp};
+      logit(d,"Updated disease and bill",p.id);say("Saved disease and bill for "+p.id+".");renderTab()}},
+      h("label",{},"Patient mobile",h("input",{id:"pd-m",type:"tel",inputmode:"numeric",maxlength:"10",value:p.mob||"",style:"width:130px",onchange:ev=>{if(!guard())return;const mo=ev.target.value.trim();if(mo&&!/^[6-9][0-9]{9}$/.test(mo)){say("Enter a valid 10-digit patient mobile number.",true);return}p.mob=mo;logit(d,"Patient mobile updated",p.id);say("Mobile saved for "+p.id+".");renderTab()}})),
+      h("label",{style:"flex:1;min-width:200px"},"Disease / diagnosis",h("input",{id:"pd-d",type:"text",maxlength:"80",value:p.dis,style:"width:100%"})),
+      h("label",{},"Total bill (\u20b9)",h("input",{id:"pd-t",type:"number",min:"0",step:"1",value:p.bill.total,style:"width:120px"})),
+      h("label",{},"Paid (\u20b9)",h("input",{id:"pd-p",type:"number",min:"0",step:"1",value:p.bill.paid,style:"width:120px"})),
+      h("button",{class:"btn",type:"submit"},"Save")),
+    h("div",{class:"kpis",style:"margin-top:10px"},tile("Total bill",INR(p.bill.total)),tile("Paid",INR(p.bill.paid)),tile("Due",INR(due),"",due?"bad":"")));
+  /* medicines */
+  sec.append(h("h3",{style:"font-size:15px;margin-top:18px"},"Medicines to take"));
+  sec.append(p.rx.length?tbl(["Medicine","Dose","When","Days",""],p.rx.map((m,i)=>h("tr",{},td(m.name),td(m.dose),td(m.freq),td(m.days),
+    td(h("button",{class:"btn sm","aria-label":"Remove medicine",onclick:()=>{if(!guard())return;p.rx.splice(i,1);logit(d,"Medicine removed",p.id+" "+m.name);say("Medicine removed.");renderTab()}},"x"))))):h("p",{class:"sub"},"No medicines added yet."));
+  sec.append(h("form",{class:"inl",style:"margin-top:8px",onsubmit:ev=>{ev.preventDefault();if(!guard())return;
+      const n=$("rx-n").value.trim(),dz=$("rx-d").value.trim(),f=$("rx-f").value.trim(),dy=Number($("rx-y").value);
+      if(n.length<2){say("Enter the medicine name.",true);return}
+      if(!Number.isInteger(dy)||dy<1||dy>365){say("Days must be a whole number from 1 to 365.",true);return}
+      p.rx.push({name:n,dose:dz||"-",freq:f||"-",days:dy});logit(d,"Medicine added",p.id+" "+n);say(n+" added for "+p.id+".");renderTab()}},
+    h("label",{},"Medicine",h("input",{id:"rx-n",type:"text",maxlength:"60"})),h("label",{},"Dose",h("input",{id:"rx-d",type:"text",maxlength:"40",placeholder:"1 tablet",style:"width:110px"})),
+    h("label",{},"When",h("input",{id:"rx-f",type:"text",maxlength:"40",placeholder:"2 times a day",style:"width:140px"})),h("label",{},"Days",h("input",{id:"rx-y",type:"number",min:"1",max:"365",style:"width:70px"})),
+    h("button",{class:"btn",type:"submit"},"Add medicine")));
+  /* reports upload */
+  sec.append(h("h3",{style:"font-size:15px;margin-top:18px"},"Reports and photos (MRI, ultrasound, X-ray, etc.)"),
+    h("form",{class:"inl",onsubmit:ev=>{ev.preventDefault();if(!guard())return;
+      const fs=Array.from($("pd-f").files);
+      if(!fs.length){say("Choose at least one photo or PDF.",true);return}
+      const bad=fs.filter(f=>!(f.type.indexOf("image/")===0||f.type==="application/pdf"))[0];
+      if(bad){say(bad.name+": only photos and PDF files are allowed.",true);return}
+      const big=fs.filter(f=>f.size>3*1024*1024)[0];
+      if(big){say(big.name+" is larger than 3 MB.",true);return}
+      const kind=$("pd-k").value,nt=$("pd-n").value.trim();
+      Promise.all(fs.map(f=>new Promise((ok,no)=>{const fr=new FileReader();fr.onload=()=>ok({id:"F"+Date.now()+Math.random().toString(36).slice(2,6),name:f.name,mime:f.type,kind,note:nt,data:fr.result,ts:Date.now(),by:user||"Guest"});fr.onerror=no;fr.readAsDataURL(f)})))
+        .then(arr=>{arr.forEach(x=>p.files.unshift(x));logit(d,"Uploaded "+kind+" ("+arr.length+")",p.id);say(arr.length+" file(s) uploaded for "+p.id+".");renderTab()})
+        .catch(()=>say("Could not read the file.",true))}},
+      h("label",{},"Type",h("select",{id:"pd-k"},RTYPES.map(x=>h("option",{value:x},x)))),
+      h("label",{style:"flex:1;min-width:180px"},"Photo or PDF (max 3 MB each)",h("input",{id:"pd-f",type:"file",accept:"image/*,application/pdf",multiple:true,style:"width:100%"})),
+      h("label",{},"Note",h("input",{id:"pd-n",type:"text",maxlength:"80",placeholder:"optional"})),
+      h("button",{class:"btn",type:"submit"},"Upload")));
+  sec.append(pgal(d,p,false));
+  /* admission history */
+  const hist=p.hist.slice().sort((a,c)=>c.ts-a.ts);
+  sec.append(h("h3",{style:"font-size:15px;margin-top:18px"},"Admission history"),hist.length?tbl(["Time","Event","Bed"],hist.map(e=>h("tr",{},td(fts(e.ts)),td(e.ev),td(e.bed)))):h("p",{class:"sub"},"None"));
+  b.append(sec)}
+
+function rBeds(d,b){
+  const ro=!canW();
+  b.append(h("h3",{},t("Beds & Admissions")),h("div",{class:"legend",style:"margin:0 0 10px"},["Available","Occupied","Cleaning","Maintenance"].map(s=>h("span",{},h("i",{class:s==="Occupied"?"sOcc":s==="Cleaning"?"sCln":s==="Maintenance"?"sMnt":"sAvl"}),t(s)))));
+  const pats=d.patients.filter(p=>p.status!=="Admitted"),free=d.beds.filter(x=>x.status==="Available");
+  const sp=h("select",{id:"ap"},pats.map(p=>h("option",{value:p.id},p.id+" · "+p.name))),sb=h("select",{id:"ab"},free.map(x=>h("option",{value:x.id},x.id+" ("+x.ward+")")));
+  b.append(h("div",{class:"inl"},h("label",{},"Patient",sp),h("label",{},"Available bed",sb),
+    h("button",{class:"btn",disabled:ro||!pats.length||!free.length,onclick:()=>{if(!guard())return;
+      const p=d.patients.filter(x=>x.id===sp.value)[0],bd=d.beds.filter(x=>x.id===sb.value)[0];
+      if(!p||!bd){say("Choose a patient and a bed.",true);return}
+      if(p.status==="Admitted"){say(p.id+" already has an active admission.",true);return}
+      if(bd.status!=="Available"){say("Only available beds can be assigned.",true);return}
+      bd.status="Occupied";bd.pid=p.id;p.status="Admitted";p.bed=bd.id;p.hist.push({ts:Date.now(),ev:"Admitted",bed:bd.id});
+      d.upd.beds=Date.now();logit(d,"Admitted patient",p.id+" to "+bd.id);note(d,"Beds",p.id+" admitted to "+bd.id+".");say("Admitted "+p.id+" to "+bd.id+".");afterChange()}},"Admit")));
+  ["Emergency","ICU","General Ward","Maternity"].forEach(w=>{
+    b.append(h("div",{class:"sec"},h("h3",{style:"font-size:15px"},w),h("div",{class:"beds"},d.beds.filter(x=>x.ward===w).map(x=>
+      h("button",{class:"bed "+x.status,"aria-pressed":selBed===x.id,onclick:()=>{selBed=x.id;renderTab()}},h("b",{},x.id),h("span",{},t(x.status)),h("span",{},x.pid||"")))))) });
+  const bd=d.beds.filter(x=>x.id===selBed)[0];
+  if(bd){
+    const set=(st,act)=>{if(!guard())return;
+      if(bd.status==="Occupied"&&st!=="Cleaning"){say("Discharge the patient first.",true);return}
+      const prev=bd.pid;
+      if(act==="Discharged"){const p=d.patients.filter(x=>x.id===bd.pid)[0];if(p){p.status="Discharged";p.bed=null;p.hist.push({ts:Date.now(),ev:"Discharged",bed:bd.id})}bd.pid=null}
+      bd.status=st;d.upd.beds=Date.now();logit(d,act==="Discharged"?"Discharged patient":"Bed "+st.toLowerCase(),(prev||"")+" "+bd.id);
+      note(d,"Beds","Bed "+bd.id+" is now "+st.toLowerCase()+".");say("Bed "+bd.id+": "+st+".");afterChange()};
+    const acts=[];
+    if(bd.status==="Occupied")acts.push(h("button",{class:"btn",disabled:ro,onclick:()=>set("Cleaning","Discharged")},"Discharge (bed goes to cleaning)"));
+    if(bd.status==="Cleaning")acts.push(h("button",{class:"btn",disabled:ro,onclick:()=>set("Available","Cleaned")},"Mark cleaned"));
+    if(bd.status==="Available")acts.push(h("button",{class:"btn",disabled:ro,onclick:()=>set("Maintenance","Maintenance started")},"Set to maintenance"));
+    if(bd.status==="Maintenance")acts.push(h("button",{class:"btn",disabled:ro,onclick:()=>set("Available","Returned to service")},"Return to service"));
+    b.append(h("div",{class:"sec"},h("p",{},h("b",{},"Selected bed: "+bd.id)," · "+t(bd.status)+(bd.pid?" · "+bd.pid:"")),h("div",{class:"inl"},acts)))}
+  const ev=[];d.patients.forEach(p=>p.hist.forEach(e=>ev.push({ts:e.ts,p:p.id,ev:e.ev,bed:e.bed})));ev.sort((a,c)=>c.ts-a.ts);
+  b.append(h("div",{class:"sec"},h("h3",{style:"font-size:15px"},"Admission history"),tbl(["Time","Patient","Event","Bed"],ev.slice(0,12).map(e=>h("tr",{},td(fts(e.ts)),td(h("span",{class:"mono"},e.p)),td(e.ev),td(e.bed))))))}
+
+function rDoc(d,b){
+  const ro=!canW(),depts=["All"].concat(d.docs.map(x=>x.dept).filter((v,i,a)=>a.indexOf(v)===i));
+  b.append(h("h3",{},t("Doctors & Schedules")),
+    h("div",{class:"inl"},h("label",{},"Search",h("input",{id:"dq",type:"search",value:dq,placeholder:"Name or specialty",oninput:ev=>{dq=ev.target.value;rows()}})),
+      h("label",{},"Department",h("select",{id:"dd",onchange:ev=>{dd=ev.target.value;rows()}},depts.map(x=>h("option",{value:x,selected:x===dd},x))))));
+  const box=h("div",{class:"sec"});b.append(box);
+  function rows(){box.innerHTML="";const s=dq.trim().toLowerCase();
+    const l=d.docs.filter(x=>(dd==="All"||x.dept===dd)&&(!s||x.name.toLowerCase().indexOf(s)>=0||x.spec.toLowerCase().indexOf(s)>=0));
+    box.append(l.length?tbl(["Doctor","Specialty","Department","Contact","Status","Working days and hours",""],l.map(x=>h("tr",{},td(x.name),td(x.spec),td(x.dept),td(x.ext),
+      td(h("select",{disabled:ro,"aria-label":"Status of "+x.name,onchange:ev=>{if(!guard()){renderTab();return}x.status=ev.target.value;d.upd.docs=Date.now();logit(d,"Doctor status "+x.status,x.name);say(x.name+": "+x.status+".");afterChange()}},["Available","In surgery","On leave"].map(s=>h("option",{value:s,selected:s===x.status},s)))),
+      td(x.slots.map(s=>s.day+" "+s.start+"-"+s.end).join(", ")),td(h("button",{class:"btn sm",onclick:()=>{selDoc=x.id;renderTab()}},"Schedule"))))):h("p",{class:"sub"},"No doctor matches."))}
+  rows();
+  const x=d.docs.filter(y=>y.id===selDoc)[0];
+  if(x){
+    const p=h("div",{class:"sec"},h("h3",{style:"font-size:15px"},"Schedule: "+x.name));
+    p.append(h("div",{},x.slots.map((s,i)=>h("span",{class:"badge"},s.day+" "+s.start+"-"+s.end+" ",h("button",{class:"btn sm",disabled:ro,"aria-label":"Remove slot",onclick:()=>{if(!guard())return;x.slots.splice(i,1);d.upd.docs=Date.now();logit(d,"Schedule slot removed",x.name);note(d,"Schedule","Schedule changed for "+x.name+".");say("Slot removed.");afterChange()}},"x")))));
+    p.append(h("form",{class:"inl",style:"margin-top:8px",onsubmit:ev=>{ev.preventDefault();if(!guard())return;
+      const day=$("sd").value,a=$("ss").value,c=$("se").value;
+      if(!a||!c){say("Enter a start and an end time.",true);return}
+      if(c<=a){say("End time must be after the start time.",true);return}
+      if(x.slots.some(s=>s.day===day&&a<s.end&&c>s.start)){say("This slot overlaps an existing slot on "+day+".",true);return}
+      x.slots.push({day,start:a,end:c});x.slots.sort((m,n)=>DAYS.indexOf(m.day)-DAYS.indexOf(n.day)||m.start.localeCompare(n.start));
+      d.upd.docs=Date.now();logit(d,"Schedule slot added",x.name+" "+day+" "+a+"-"+c);note(d,"Schedule","Schedule changed for "+x.name+".");say("Slot added.");afterChange()}},
+      h("label",{},"Day",h("select",{id:"sd"},DAYS.map(s=>h("option",{value:s},s)))),h("label",{},"Start",h("input",{id:"ss",type:"time"})),h("label",{},"End",h("input",{id:"se",type:"time"})),
+      h("button",{class:"btn",type:"submit",disabled:ro},"Add slot")));
+    b.append(p)}}
+
+function rMed(d,b){
+  const ro=!canW();
+  b.append(h("h3",{},t("Medicine Inventory")));
+  b.append(tbl(["Medicine","Quantity","Minimum","Expiry","Alerts",""],d.meds.map(m=>{const f=mflags(m);
+    return h("tr",{},td(m.name),td(h("span",{class:"mono"},m.qty)),td(m.min),td(fdate(m.exp)),
+      td(f.length?f.map(x=>badge(x,x==="Low stock"||x==="Near expiry"?"b-warn":"b-bad")):badge("OK","b-ok")),td(h("button",{class:"btn sm",onclick:()=>{selMed=m.id;renderTab()}},"Stock action")))})));
+  const m=d.meds.filter(y=>y.id===selMed)[0];
+  if(m){
+    b.append(h("form",{class:"sec inl",onsubmit:ev=>{ev.preventDefault();if(!guard())return;
+      const k=$("mk").value,q=Number($("mq").value),nt=$("mn").value.trim()||"-";
+      if(!Number.isInteger(q)||q<0){say("Quantity must be a whole number, zero or more.",true);return}
+      if(k!=="Adjust"&&q===0){say("Enter a quantity above zero.",true);return}
+      const before=mflags(m).join();let nq=m.qty;
+      if(k==="Receipt")nq=m.qty+q;else if(k==="Dispense"){if(q>m.qty){say("Not enough stock. Only "+m.qty+" in hand.",true);return}nq=m.qty-q}else nq=q;
+      if(nq<0){say("Stock cannot go negative.",true);return}
+      m.qty=nq;m.moves.unshift({ts:Date.now(),kind:k,qty:q,note:nt});d.upd.meds=Date.now();
+      logit(d,"Stock "+k.toLowerCase(),m.name+" ("+q+")");
+      mflags(m).forEach(f=>{if(before.indexOf(f)<0)note(d,"Stock",m.name+": "+f.toLowerCase()+".")});
+      say(m.name+": stock is now "+m.qty+".");afterChange()}},
+      h("label",{},"Action: "+m.name,h("select",{id:"mk"},h("option",{value:"Receipt"},"Receive stock"),h("option",{value:"Dispense"},"Dispense"),h("option",{value:"Adjust"},"Adjust (set quantity)"))),
+      h("label",{},"Quantity",h("input",{id:"mq",type:"number",min:"0",step:"1",style:"width:110px"})),h("label",{},"Note",h("input",{id:"mn",type:"text",maxlength:"60"})),
+      h("button",{class:"btn",type:"submit",disabled:ro},"Apply")));
+    b.append(h("div",{class:"sec"},h("h3",{style:"font-size:15px"},"Stock movement history: "+m.name),tbl(["Time","Type","Quantity","Note"],m.moves.slice(0,10).map(v=>h("tr",{},td(fts(v.ts)),td(v.kind),td(v.qty),td(v.note))))))}}
+
+function rAmb(d,b){
+  const ro=!canW(),s=HS();
+  b.append(h("h3",{},t("Ambulances")));
+  b.append(s.amb?h("p",{},"Hospital ambulance line (real): ",h("span",{class:"mono"},s.amb)):h("p",{},t("none")));
+  b.append(tbl(["Vehicle","Registration","Type","Driver (fictional)","Contact","Status","Last updated"],d.amb.map(a=>h("tr",{},td(h("span",{class:"mono"},a.id)),td(a.reg),td(a.type),td(a.driver),td(a.ext),
+    td(h("select",{disabled:ro,"aria-label":"Status of "+a.id,onchange:ev=>{if(!guard()){renderTab();return}a.status=ev.target.value;a.upd=Date.now();d.upd.amb=a.upd;logit(d,"Ambulance "+a.status,a.id);say(a.id+": "+a.status+".");afterChange()}},["Available","On Duty","Maintenance"].map(x=>h("option",{value:x,selected:x===a.status},x)))),td(fts(a.upd))))));
+  b.append(h("p",{class:"fine"},"Status is recorded by staff. There is no GPS tracking or dispatch in this console."))}
+
+function rFac(d,b){b.append(h("h3",{},t("Facilities & Departments")),tbl(["Facility","Location / floor","Opening hours","Contact","Description"],d.fac.map(f=>h("tr",{},f.map(x=>td(x))))))}
+
+function rNot(d,b){
+  const ro=!canW();
+  b.append(h("h3",{},t("Notifications")),h("div",{class:"inl"},h("label",{},"Show",h("select",{id:"nf",onchange:ev=>{nfilter=ev.target.value;renderTab()}},h("option",{value:"open",selected:nfilter==="open"},"Unresolved"),h("option",{value:"all",selected:nfilter==="all"},"All")))));
+  const l=d.notes.filter(x=>nfilter==="all"||x.st!=="Resolved");
+  b.append(h("div",{class:"sec"},l.length?tbl(["Time","Type","Message","Status","Acknowledged",""],l.map(x=>h("tr",{},td(fts(x.ts)),td(x.type),td(x.msg),td(badge(x.st,x.st==="Resolved"?"b-ok":x.st==="Acknowledged"?"b-warn":"b-bad")),td(x.ack?fts(x.ack):"-"),
+    td(h("button",{class:"btn sm",disabled:ro||x.st!=="New",onclick:()=>{if(!guard())return;x.st="Acknowledged";x.ack=Date.now();logit(d,"Alert acknowledged",x.type+" #"+x.id);afterChange()}},"Acknowledge")," ",
+       h("button",{class:"btn sm",disabled:ro||x.st==="Resolved",onclick:()=>{if(!guard())return;x.st="Resolved";if(!x.ack)x.ack=Date.now();logit(d,"Alert resolved",x.type+" #"+x.id);afterChange()}},"Resolve"))))):h("p",{class:"sub"},"No unresolved alerts.")))}
+
+function rLog(d,b){b.append(h("h3",{},t("Activity Log")),tbl(["Time","Actor","Action","Record"],d.log.slice(0,60).map(l=>h("tr",{},td(fts(l.ts)),td(l.actor),td(l.action),td(l.entity)))))}
+
+function rAdm(d,b){
+  b.append(h("h3",{},t("Administration & Access")));
+  if(role!=="admin"){b.append(h("div",{class:"lock"},h("b",{},"Admin only"),h("p",{},"Switch the role to Admin to open this page.")));return}
+  b.append(h("p",{class:"sub"},"Signed in as "+(user||"Guest")+" with the Admin role."),
+    tbl(["Area","Viewer","Staff","Admin"],[["Dashboard, facilities, activity log","Read","Read","Read"],["Patient records (disease, bill, medicines, report uploads)","No access","Read, register and update","Read, register and update"],["Beds, doctors, medicines, ambulances, alerts","Read","Read and change","Read and change"],["This page and demo data reset","No access","No access","Full"]].map(r=>h("tr",{},r.map(x=>td(x))))),
+    h("div",{class:"sec inl"},h("button",{class:"btn danger",onclick:()=>{delete DB[hid];delRemote(hid);selBed=selDoc=selMed=null;say("Demo data for this hospital was reset.");afterChange()}},"Reset demo data for this hospital")),
+    h("p",{class:"fine"},"Login, roles and access rules run in this page only. A real deployment needs server-side authorization for sensitive reads and writes."))}
+
+/* ---------- selectors and screens ---------- */
+function setHospital(id){hid=id;selBed=selDoc=selMed=null;renderAll()}
+function renderStates(){
+  ["states","pstates"].forEach(id=>{const c=$(id);c.innerHTML="";
+    STATE_ORDER.forEach(s=>{const b=h("button",{class:"chip","aria-pressed":s===state,disabled:!STATES[s].length,title:STATES[s].length?"":t("soon"),
+      onclick:()=>{state=s;city=STATES[s][0];hid=H.filter(x=>x.city===city)[0].id;selBed=selDoc=selMed=null;renderAll()}},s);c.append(b)})})}
+function renderCities(){
+  if(STATES[state].indexOf(city)<0)city=STATES[state][0];
+  ["cities","pcities"].forEach(id=>{const c=$(id);c.innerHTML="";
+    STATES[state].forEach(n=>c.append(h("button",{class:"chip","aria-pressed":n===city,onclick:()=>{city=n;hid=H.filter(x=>x.city===n)[0].id;selBed=selDoc=selMed=null;renderAll()}},n)))})}
+function renderList(){
+  ["hospitals","phosp"].forEach(id=>{const l=$(id);l.innerHTML="";
+    H.filter(x=>x.city===city).forEach(x=>l.append(h("button",{class:"hbtn","aria-pressed":x.id===hid,onclick:()=>setHospital(x.id)},h("b",{},x.name),h("span",{},x.area))))})}
+
+/* approximate hospital locations (area level) used only for the nearest-hospital list */
+const GEO={"aiims": [28.5672, 77.21], "sgrh": [28.6386, 77.1899], "apollo-d": [28.541, 77.2833], "max-p": [28.6295, 77.305], "max-s": [28.7165, 77.165], "surya": [28.779, 77.498], "kanha": [28.76, 77.475], "paras-m": [28.834, 77.576], "manipal": [28.661, 77.431], "yashoda-i": [28.642, 77.37], "yashoda-k": [28.645, 77.323], "max-v": [28.647, 77.338], "paras-v": [28.65, 77.34], "lecrest": [28.66, 77.37], "metro-n": [28.596, 77.35], "felix": [28.5, 77.4], "yatharth-n": [28.59, 77.36], "apollo-n": [28.578, 77.327], "yatharth-gn": [28.608, 77.43], "anand": [28.976, 77.71], "madhu": [28.73, 77.78], "medanta": [28.4395, 77.0425], "paras-g": [28.459, 77.075], "max-g": [28.456, 77.075], "park-g": [28.415, 77.042], "artemis": [28.431, 77.067], "metro-f": [28.412, 77.308], "civil-f": [28.411, 77.31], "ujala": [28.993, 77.02], "global-a": [27.56, 76.61], "hariram": [28.21, 76.86], "max-saket": [28.528, 77.213], "fortis-okhla": [28.561, 77.276], "moolchand": [28.569, 77.235], "safdarjung": [28.568, 77.206], "rml": [28.626, 77.2], "loknayak": [28.643, 77.238], "lady-hardinge": [28.633, 77.215], "ddu": [28.629, 77.113], "venkateshwar": [28.589, 77.045], "manipal-dw": [28.599, 77.06], "aakash": [28.597, 77.05], "jaipur-golden": [28.701, 77.103], "bsa": [28.712, 77.117], "fortis-sb": [28.715, 77.161], "gtb": [28.684, 77.309], "metro-pv": [28.641, 77.294], "santosh": [28.688, 77.435], "yashoda-nn": [28.672, 77.44], "fortis-n": [28.619, 77.364], "jaypee": [28.513, 77.372], "kailash-n": [28.581, 77.334], "dist-noida": [28.57, 77.34], "sharda": [28.473, 77.48], "gims": [28.474, 77.508], "subharti": [29.053, 77.702], "llrm": [28.976, 77.718], "lokpriya": [28.97, 77.72], "fortis-fmri": [28.451, 77.072], "columbia-g": [28.503, 77.029], "narayana-g": [28.468, 77.087], "civil-g": [28.471, 77.023], "fortis-f": [28.4, 77.317], "aims-f": [28.43, 77.307], "qrg": [28.409, 77.319], "civil-s": [28.993, 77.015], "pgims": [28.891, 76.592], "aiims-j": [28.62, 76.65], "civil-b": [28.692, 76.93], "kcgmc": [29.67, 76.99], "civil-k": [29.69, 76.985], "rgggh": [27.565, 76.626]};
+let me=null,locMsg="",locBad=false;
+function dkm(a,b){const R=6371,r=x=>x*Math.PI/180,dl=r(b[0]-a[0]),dg=r(b[1]-a[1]);const q=Math.sin(dl/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dg/2)**2;return 2*R*Math.asin(Math.sqrt(q))}
+let watchId=null,firstFix=true,mapPos=null;
+function gmUrl(p){return "https://www.google.com/maps/search/?api=1&query="+p[0]+","+p[1]}
+function closeMap(){const m=$("mapbox");if(m)m.hidden=true}
+function buildMap(){
+  let m=$("mapbox");if(m)m.remove();
+  m=h("div",{id:"mapbox",class:"mapbox",role:"dialog","aria-label":t("maptitle")},
+    h("div",{class:"mapin"},
+      h("div",{class:"row",style:"justify-content:space-between;align-items:center"},h("b",{},"\ud83d\udccd "+t("maptitle")),h("button",{class:"btn",type:"button",onclick:closeMap},t("mapclose"))),
+      h("iframe",{id:"mapf",title:t("maptitle"),loading:"lazy",referrerpolicy:"no-referrer-when-downgrade",allow:"geolocation"}),
+      h("p",{class:"fine",style:"margin:0"},t("mapnote")),
+      h("div",{class:"row"},h("a",{class:"btn primary",id:"gm1",target:"_blank",rel:"noopener"},t("mapopen")),h("a",{class:"btn",id:"gm2",target:"_blank",rel:"noopener"},t("mapdir")))));
+  m.addEventListener("click",ev=>{if(ev.target===m)closeMap()});document.body.append(m);mapPos=null}
+function updateMap(){
+  const m=$("mapbox");if(!m||!me)return;
+  if(!mapPos||dkm(mapPos,me)>0.025){mapPos=me.slice();$("mapf").src="https://maps.google.com/maps?q="+me[0]+","+me[1]+"&z=15&output=embed"}
+  $("gm1").href=gmUrl(me);
+  const n=nearestList()[0];
+  $("gm2").href=n?"https://www.google.com/maps/dir/?api=1&origin="+me[0]+","+me[1]+"&destination="+GEO[n.x.id][0]+","+GEO[n.x.id][1]+"&travelmode=driving":gmUrl(me)}
+function askLoc(){
+  if(!navigator.geolocation){locMsg=t("locno");locBad=true;renderNear();return}
+  if(window.isSecureContext===false){locMsg=t("locsec");locBad=true;renderNear();return}
+  locMsg=t("locwait");locBad=false;firstFix=true;renderNear();
+  if(watchId!=null)navigator.geolocation.clearWatch(watchId);
+  watchId=navigator.geolocation.watchPosition(p=>{
+    me=[p.coords.latitude,p.coords.longitude];locMsg="";locBad=false;
+    if(firstFix){firstFix=false;const n=nearestList()[0];if(n){state=n.x.state;city=n.x.city;hid=n.x.id;selBed=selDoc=selMed=null}renderAll();buildMap()}else renderNear();
+    updateMap()},
+    err=>{locMsg=t(err.code===1?"locdeny":"locoff");locBad=true;renderNear();closeMap()},
+    {enableHighAccuracy:true,timeout:20000,maximumAge:5000})}
+function nearestList(){return !me?[]:H.filter(x=>GEO[x.id]).map(x=>({x,d:dkm(me,GEO[x.id])})).sort((a,b)=>a.d-b.d).slice(0,5)}
+function renderNear(){
+  ["near","pnear"].forEach(id=>{const c=$(id);if(!c)return;c.innerHTML="";
+    c.append(h("button",{class:"btn",type:"button",onclick:askLoc},"\ud83d\udccd "+t("locbtn")));
+    if(locMsg)c.append(h("p",{class:"msgl"+(locBad?" bad":"")},locMsg));
+    else if(!me)c.append(h("p",{class:"msgl"},t("locask")));
+    const L=nearestList();
+    if(L.length){c.append(h("p",{class:"lbl",style:"margin-top:10px"},t("nearest")));
+      L.forEach(o=>c.append(h("button",{class:"hbtn",type:"button","aria-pressed":o.x.id===hid,style:"margin-bottom:6px",onclick:()=>{state=o.x.state;city=o.x.city;setHospital(o.x.id)}},h("b",{},o.x.name),h("span",{},o.x.city+" \u00b7 ~"+o.d.toFixed(1)+" "+t("away")))))}})}
+function renderAll(){renderStates();renderCities();renderList();renderNear();renderTabs();renderTab()}
+function applyText(){
+  document.querySelectorAll("[data-i]").forEach(e=>{e.textContent=t(e.getAttribute("data-i"))});
+  document.querySelectorAll("[data-lang]").forEach(e=>{e.setAttribute("aria-pressed",e.getAttribute("data-lang")===lang)});
+  document.querySelectorAll("[data-ph]").forEach(e=>{const s=t(e.getAttribute("data-ph"));e.placeholder=s;e.setAttribute("aria-label",s)});
+  document.documentElement.lang=lang}
+function steps(){
+  const idx={login:0,intro:1,pick:2,dash:3}[cur];
+  document.querySelectorAll(".steps").forEach(el=>{el.innerHTML="";t("stp");T[lang].stp.forEach((s,i)=>el.append(h("span",{class:i===idx?"on":""},(i+1)+". "+s)))})}
+function who(){renderUser();$("who").textContent=user?t("hello")+", "+user+" ("+t(ltype[0].toUpperCase()+ltype.slice(1))+").":""}
+function renderUser(){
+  document.querySelectorAll(".uinfo").forEach(c=>{c.innerHTML="";c.hidden=!authed;if(!authed)return;
+    const nm=user||t("guest1"),ty=t(ltype[0].toUpperCase()+ltype.slice(1));
+    c.append(h("div",{class:"uav"},nm.trim()[0].toUpperCase()),
+      h("div",{},h("b",{},nm),h("small",{},ty),umobile?h("small",{class:"mono"},"+91 "+umobile):null,ugmail?h("small",{},ugmail):null))})}
+function show(n){cur=n;if(ltype==="patient")role="viewer";$("role").disabled=ltype==="patient";["login","intro","pick","dash"].forEach(s=>{$(s).hidden=s!==n});steps();who();$("role").value=role;window.scrollTo(0,0);const sb=$("statusbar"),slot=n==="dash"?$("slot4"):null;
+  if(slot){slot.append(sb);sb.hidden=false}else sb.hidden=true;
+  if(n==="dash")refresh()}
+function stamp(){last=new Date();$("stamp").textContent=last.toLocaleTimeString(lang==="hi"?"hi-IN":"en-IN")}
+function refresh(){left=300;return loadDB().then(()=>{stamp();renderAll();const m=$("main");m.classList.remove("flash");void m.offsetWidth;m.classList.add("flash")})}
+/* quiet check every 30 s: if another device changed the data, show it (skipped while you are typing or have unsaved changes) */
+setInterval(()=>{if($("dash").hidden||!TOKEN||Object.keys(DIRTY).length)return;const a=document.activeElement;if(a&&/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName))return;
+  apiFetch("/api/db").then(r=>r.ok?r.json():null).then(j=>{if(!j)return;const sig=JSON.stringify(j.db);if(sig===lastSig)return;lastSig=sig;Object.keys(j.db).forEach(k=>{DB[k]=j.db[k];VER[k]=(j.versions||{})[k]||0});stamp();renderAll()}).catch(()=>{})},30000);
+setInterval(()=>{if($("dash").hidden)return;left--;if(left<=0)refresh();const m=Math.floor(left/60),s=left%60;$("count").textContent=m+":"+pad(s)},1000);
+function setLang(l){lang=l;try{localStorage.setItem("mc-lang",l)}catch(x){}applyText();renderAll();stamp();steps();who()}
+function toggleTheme(){
+  const root=document.documentElement;let c=root.getAttribute("data-theme");
+  if(!c)c=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+  const nx=c==="dark"?"light":"dark";root.setAttribute("data-theme",nx);try{localStorage.setItem("mc-theme",nx)}catch(x){}}
+document.addEventListener("click",ev=>{const l=ev.target.closest&&ev.target.closest("[data-lang]");if(l)setLang(l.getAttribute("data-lang"))});
+document.querySelectorAll('button[data-i="theme"]').forEach(b=>{b.onclick=toggleTheme});
+$("lform").onsubmit=ev=>{
+  ev.preventDefault();
+  const n=$("lname").value.trim(),m=$("lmobile").value.trim(),g=$("lgmail").value.trim();let msg="";
+  const okN=n.length>=2,okM=/^[6-9][0-9]{9}$/.test(m),okG=/^[a-z0-9](?:[a-z0-9.]{4,28})[a-z0-9]@gmail\.com$/i.test(g)&&g.indexOf("..")<0;
+  $("lname").setAttribute("aria-invalid",!okN);$("lmobile").setAttribute("aria-invalid",!okM);$("lgmail").setAttribute("aria-invalid",!okG);
+  if(!okN)msg=t("eName");else if(!okM)msg=t("eMobile");else if(!okG)msg=t("eGmail");
+  const needC=$("lrole").value!=="patient",cv=$("lcode").value.trim();
+  $("lcode").setAttribute("aria-invalid",needC&&!/^\d{6}$/.test(cv));
+  if(!msg&&needC&&!/^\d{6}$/.test(cv))msg=t("eCode");
+  $("lerr").textContent=msg;if(msg)return;
+  const btn=$("lsubmit"),lt=$("lrole").value,EM={name:"eName",mobile:"eMobile",gmail:"eGmail",code:"eCodeBad"};
+  btn.disabled=true;
+  fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,mobile:m,gmail:g,type:lt,code:cv})})
+    .then(r=>r.json().then(j=>({r:r,j:j})))
+    .then(o=>{
+      if(!o.r.ok){$("lerr").textContent=o.r.status===429?o.j.error:t(EM[o.j.error]||"eNet");if(o.j.error==="code")$("lcode").setAttribute("aria-invalid",true);return}
+      TOKEN=o.j.token;user=n;ltype=lt;role=LOGIN_ROLE[lt];umobile=m;ugmail=g;authed=true;
+      return loadDB().then(()=>show("intro"))})
+    .catch(()=>{$("lerr").textContent=t("eNet")})
+    .then(()=>{btn.disabled=false})};
+$("lcode").oninput=function(){this.value=this.value.replace(/\D/g,"").slice(0,6)};
+function syncCode(){const need=$("lrole").value!=="patient";$("lcodew").hidden=!need;$("staffbtn").setAttribute("aria-pressed",need);if(!need)$("lcode").value=""}
+let lmode="login";
+function setMode(m){lmode=m;
+  $("tabLogin").setAttribute("aria-pressed",m==="login");$("tabSignup").setAttribute("aria-pressed",m==="signup");
+  [["lsubtxt",m==="login"?"lbtn":"signupBtn"],["swtxt",m==="login"?"noAcct":"haveAcct"],["swbtn",m==="login"?"tabSignup":"tabLogin"]].forEach(x=>{$(x[0]).setAttribute("data-i",x[1]);$(x[0]).textContent=t(x[1])})}
+$("tabLogin").onclick=()=>setMode("login");$("tabSignup").onclick=()=>setMode("signup");
+$("swbtn").onclick=()=>setMode(lmode==="login"?"signup":"login");
+$("staffbtn").onclick=()=>{$("lrole").value=$("lrole").value==="patient"?"doctor":"patient";syncCode()};
+$("lrole").onchange=syncCode;
+document.addEventListener("click",ev=>{const a=ev.target.closest&&ev.target.closest("[data-foot]");if(!a)return;ev.preventDefault();
+  const g=a.getAttribute("data-foot");
+  if(g==="plogin"||g==="hos"||g==="hlogin"){$("lrole").value=g==="plogin"?"patient":(g==="hos"?"staff":"doctor");syncCode();show("login");return}
+  if(!authed){show("login");return}
+  show(g)});
+$("lmobile").oninput=function(){this.value=this.value.replace(/\D/g,"").slice(0,10)};
+$("guest").onclick=()=>{
+  fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({guest:true})}).then(r=>r.json()).then(j=>{TOKEN=j.token||""}).catch(()=>{TOKEN=""})
+    .then(()=>{user="";umobile="";ugmail="";ltype="patient";role="viewer";authed=true;return loadDB()}).then(()=>show("intro"))};
+document.addEventListener("click",ev=>{const n=ev.target.closest&&ev.target.closest("[data-nav]");if(n){const g=n.getAttribute("data-nav");if(g==="dash"){if(fromDash)show("dash");else openDash()}else show(g)}});
+document.addEventListener("click",ev=>{if(ev.target.closest&&ev.target.closest(".menu"))return;const hb=ev.target.closest&&ev.target.closest(".hamb");document.querySelectorAll(".bar").forEach(b=>{const m=b.querySelector(".menu"),k=b.querySelector(".hamb");if(!m)return;const open=hb===k?m.hidden:false;m.hidden=!open;k.setAttribute("aria-expanded",open)})});
+document.addEventListener("keydown",ev=>{if(ev.key==="Escape"){document.querySelectorAll(".menu").forEach(m=>{m.hidden=true});closeMap()}});
+function openDash(){
+  try{sessionStorage.setItem("mc-sess",JSON.stringify({ok:1,hid:hid,role:role,lt:ltype,u:user,mob:umobile,gm:ugmail,lang:lang,tok:TOKEN}))}catch(e){show("dash");return}
+  const w=window.open(location.href.split("#")[0]+"#d=1","_blank");if(!w)show("dash")}
+$("back").onclick=()=>show("intro");
+$("logout").onclick=()=>{TOKEN="";closeLive();user="";ltype="patient";role="viewer";$("lrole").value="patient";syncCode();try{sessionStorage.removeItem("mc-sess")}catch(e){}fromDash=false;authed=false;umobile="";ugmail="";show("login")};
+$("now").onclick=()=>{
+  const b=$("now"),m=$("rfmsg");if(b.disabled)return;
+  b.disabled=true;b.classList.add("busy");b.textContent=t("refreshing");m.className="rf run";m.textContent=t("refreshing");
+  setTimeout(()=>{refresh();b.disabled=false;b.classList.remove("busy");b.textContent=t("now");
+    m.className="rf ok";m.textContent="\u2713 "+t("refreshed");
+    setTimeout(()=>{m.textContent="";m.className=""},2500)},800)};
+$("role").onchange=ev=>{role=ev.target.value;say("");renderTabs();renderTab()};
+try{const sl=localStorage.getItem("mc-lang");if(sl==="hi"||sl==="en")lang=sl;const st=localStorage.getItem("mc-theme");if(st)document.documentElement.setAttribute("data-theme",st)}catch(x){}
+let fromDash=false;
+try{if(location.hash==="#d=1"){const q=JSON.parse(sessionStorage.getItem("mc-sess")||"null");
+  if(q&&q.ok){const x=H.filter(y=>y.id===q.hid)[0];if(x){hid=x.id;state=x.state;city=x.city}
+    if(["patient","doctor","staff"].indexOf(q.lt)>=0)ltype=q.lt;
+    role=ltype==="patient"?"viewer":(["viewer","staff","admin"].indexOf(q.role)>=0?q.role:"staff");
+    TOKEN=q.tok||"";user=q.u||"";umobile=q.mob||"";ugmail=q.gm||"";if(q.lang==="hi"||q.lang==="en")lang=q.lang;$("lrole").value=ltype;fromDash=true;authed=true}}}catch(x){}
+loadDB().then(()=>{applyText();renderAll();stamp();show(fromDash?"dash":"login")});
+</script>
+
+</body></html>
